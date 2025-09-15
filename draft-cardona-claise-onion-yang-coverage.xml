@@ -206,7 +206,7 @@ device
       <section title="Coverage Across Multiple Documents">
         <t>It is common that a YANG module defined in one document might be used, extended, or exemplified in another document. Examples could be spread across multiple RFCs or drafts (for instance, a base YANG module in an RFC and a usage guide in a separate draft that provides additional examples). While our primary focus is on coverage within a single document's scope (i.e. how well the examples in this document cover this document's module), one could imagine tooling that aggregates examples from multiple sources for a more holistic coverage analysis. For example, if module A is defined in RFC X, and RFC Y (perhaps a companion or a applicability statement) provides additional examples for module A, a combined coverage analysis across X and Y would give a better picture of how module A is covered in total. We will strive to define approaches that enable tooling to do this kind of multi-document coverage assessment automatically in the future.</t>
 
-        <t>For the concept of YANG packages (draft-ietf-netmod-yang-packages), the coverage across the entire package might be of interest.</t>
+        <t>For the concept of YANG packages <xref target="I-D.ietf-netmod-yang-packages"/>, the coverage across the entire package might be of interest.</t>
 
         <t> For the to-be-created ONIONS Working Group, the coverage across (service) abstractions might be of interest.</t>
       </section>
@@ -244,6 +244,7 @@ device
     <references title="Informative References">
       <?rfc include="reference.RFC.8407"?>
       <?rfc include="reference.I-D.ietf-netmod-rfc8407bis"?>
+      <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
   </back>
 </rfc>
