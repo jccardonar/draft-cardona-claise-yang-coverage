@@ -1,49 +1,15 @@
-DRAFT_BASE = draft-cardona-claise-onion-yang-coverage
+LIBDIR := lib
+-include $(LIBDIR)/main.mk
 
-# Extract version from XML docName attribute
-VERSION = $(shell grep 'docName=' $(DRAFT_BASE).xml | head -1 | sed 's/.*docName="[^"]*-\([0-9][0-9]\)".*/\1/')
-DRAFT = $(DRAFT_BASE)-$(VERSION)
-
-# Tools
-XML2RFC = xml2rfc
-RM = rm -f
-OPEN = open
-
-# Source files
-XML_SRC = $(DRAFT_BASE).xml
-
-# Output formats  
-TXT_OUT = $(DRAFT).txt
-XML_OUT = $(DRAFT).xml
-
-# Default target - build all common formats
-all: xml txt
-
-# Build both XML and TXT
-both: xml txt 
-
-# Build versioned XML file
-$(XML_OUT): $(XML_SRC)
-	cp $< $@
-
-# Build text version
-$(TXT_OUT): $(XML_SRC)
-	$(XML2RFC) --text $< -o $@
-
-xml: $(XML_OUT)
-txt: $(TXT_OUT)
-
-clean:
-	$(RM) $(TXT_OUT) $(XML_OUT)
-
-distclean: clean
-	$(RM) *~ *.bak *.tmp
-	$(RM) .*.swp .*.swo
-
-.PHONY: all txt xml clean version
-
-# Show detected version (for debugging)
-version:
-	@echo "Detected version: $(VERSION)"
-	@echo "Full draft name: $(DRAFT)" 
-
+$(LIBDIR)/main.mk:
+ifneq (,$(shell grep "path *= *$(LIBDIR)" .gitmodules 2>/dev/null))
+	git submodule sync
+	git submodule update --init
+else
+ifneq (,$(wildcard $(ID_TEMPLATE_HOME)))
+	ln -s "$(ID_TEMPLATE_HOME)" $(LIBDIR)
+else
+	git clone -q --depth 10 -b main \
+	    https://github.com/martinthomson/i-d-template $(LIBDIR)
+endif
+endif
