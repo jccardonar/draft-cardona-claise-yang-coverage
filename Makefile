@@ -1,4 +1,14 @@
 LIBDIR := lib
+.DEFAULT_GOAL := all
+
+.PHONY: clean-versioned really-clean fresh-next fresh-idnits
+
+# Before running template idnits, remove stale generated submission artifacts.
+idnits:: clean-versioned
+
+clean-versioned:
+	rm -rf versioned
+
 -include $(LIBDIR)/main.mk
 
 $(LIBDIR)/main.mk:
@@ -14,14 +24,14 @@ else
 endif
 endif
 
-.PHONY: clean-versioned really-clean fresh-idnits
-
-clean-versioned:
-	rm -rf versioned
-
 really-clean: clean clean-versioned
 	rm -f draft-*.txt draft-*.html draft-*.pdf draft-*.redxml
 
-fresh-idnits: clean-versioned
+fresh-next:
+	rm -rf versioned
 	$(MAKE) next
+
+fresh-idnits:
+	rm -rf versioned
 	$(MAKE) idnits
+

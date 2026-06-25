@@ -1,4 +1,4 @@
-<!-- regenerate: on (set to off if you edit this file) -->
+<!-- regenerate: off (set to off if you edit this file) -->
 
 # Guidelines for YANG Example Validation and Coverage Analysis in IETF Documents
 
@@ -24,6 +24,12 @@ Formatted text and HTML versions of the draft can be built using `make`.
 
 ```sh
 $ make
+```
+
+Validate and build Next xml version with:
+
+```sh
+$ make idnits
 ```
 
 Command line usage requires that you have the necessary software installed.  See
