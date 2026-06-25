@@ -5,8 +5,8 @@
 Network Modeling                                              C. Cardona
 Internet-Draft                                                       NTT
 Intended status: Informational                                 B. Claise
-Expires: 27 December 2025                                 Everything OPS
-                                                            25 June 2025
+Expires: 27 December 2026                                 Everything OPS
+                                                            25 June 2026
 
 
   Guidelines for YANG Example Validation and Coverage Analysis in IETF
@@ -38,11 +38,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 December 2025.
+   This Internet-Draft will expire on 27 December 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -69,9 +69,8 @@ Table of Contents
    5.  Conclusion
    6.  IANA Considerations
    7.  Security Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   8.  Normative References
+   9.  Informative References
    Authors' Addresses
 
 1.  Introduction
@@ -83,7 +82,7 @@ Table of Contents
    how to include and test example data for those modules.  Example data
    instances are vital to illustrate how a model is intended to be used,
    but the guidelines for presenting and validating these examples are
-   scarce.  The updated guidelines in RFC 8407bis improve the situation,
+   scarce.  The updated guidelines in RFC 9907 improve the situation,
    but gaps still exist in providing tools that can automatically give
    authors feedback on what they might be missing in their models.
 
@@ -125,13 +124,13 @@ Table of Contents
 
    Specifically, example instances SHOULD be enclosed as code blocks
    using the CODE BEGINS / CODE ENDS convention (as defined in the
-   updated guidelines, e.g., draft-ietf-netmod-rfc8407bis).  They should
-   also be given a file name that clearly identifies them as examples,
-   analogous to how YANG modules are named (see RFC 8407bis guidelines).
-   We propose that the file name ends with the suffix .instance.xml for
-   XML instances or .instance.json for JSON instances.  This naming
-   convention makes it easy for tools to identify which code snippets
-   are YANG instance examples that can be parsed and validated.
+   updated guidelines, e.g., RFC 9907).  They should also be given a
+   file name that clearly identifies them as examples, analogous to how
+   YANG modules are named (see RFC 9907).  We propose that the file name
+   ends with the suffix .instance.xml for XML instances or
+   .instance.json for JSON instances.  This naming convention makes it
+   easy for tools to identify which code snippets are YANG instance
+   examples that can be parsed and validated.
 
    Each example file name SHOULD be unique within a document (and
    ideally unique across related documents being analyzed together).
@@ -139,7 +138,6 @@ Table of Contents
    file names, since that could indicate conflicting or repeated
    content.  For example, an XML instance might be included as:
 
-   // Not an actual instance
    <CODE BEGINS> file "interface-config.instance.xml"
    <?xml version="1.0" encoding="UTF-8"?>
    <data> ... </data>
@@ -147,7 +145,6 @@ Table of Contents
 
    And a JSON instance as:
 
-   // Not an actual instance
    <CODE BEGINS> file "interface-config.instance.json"
    {
      "interface": { ... }
@@ -369,6 +366,8 @@ Table of Contents
      }
    }
 
+                                  Figure 1
+
    And this example instance:
 
    <CODE BEGINS> file "device-config.instance.xml"
@@ -393,10 +392,12 @@ Table of Contents
    Non-coverage tree (missing nodes):
 
    device
-   ├── location
-   ├── admin-state
-   └── interface
-       └── other
+   +-- location
+   +-- admin-state
+   +-- interface
+       +-- other
+
+                                  Figure 2
 
    This analysis helps authors identify that the 'location' and 'admin-
    state' leafs need examples.
@@ -469,36 +470,31 @@ Table of Contents
    data from untrusted sources, such as denial of service attacks
    through maliciously crafted large or complex examples.
 
-8.  References
-
-8.1.  Normative References
+8.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
-              RFC 7950, DOI 10.17487/RFC7950, August 2016,
-              <https://www.rfc-editor.org/info/rfc7950>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
+              RFC 7950, DOI 10.17487/RFC7950, August 2016,
+              <https://www.rfc-editor.org/info/rfc7950>.
 
    [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
               2022, <https://www.rfc-editor.org/info/rfc9195>.
 
-8.2.  Informative References
+9.  Informative References
 
-   [I-D.ietf-netmod-rfc8407bis]
-              Bierman, A., Boucadair, M., and Q. Wu, "Guidelines for
-              Authors and Reviewers of Documents Containing YANG Data
-              Models", Work in Progress, Internet-Draft, draft-ietf-
-              netmod-rfc8407bis-28, 5 June 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
-              rfc8407bis-28>.
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
 
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., and J. Sterne, "YANG
@@ -506,11 +502,6 @@ Table of Contents
               netmod-yang-packages-07, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
               yang-packages-07>.
-
-   [RFC8407]  Bierman, A., "Guidelines for Authors and Reviewers of
-              Documents Containing YANG Data Models", RFC 8407,
-              DOI 10.17487/RFC8407, October 2018,
-              <https://www.rfc-editor.org/info/rfc8407>.
 
 Authors' Addresses
 
