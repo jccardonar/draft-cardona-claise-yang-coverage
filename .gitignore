@@ -18,7 +18,6 @@
 /node_modules/
 /versioned/
 archive.json
-draft-cardona-claise-onion-yang-coverage.xml
 Gemfile.lock
 package-lock.json
 report.xml
