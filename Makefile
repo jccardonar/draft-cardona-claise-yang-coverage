@@ -13,3 +13,15 @@ else
 	    https://github.com/martinthomson/i-d-template $(LIBDIR)
 endif
 endif
+
+.PHONY: clean-versioned really-clean fresh-idnits
+
+clean-versioned:
+	rm -rf versioned
+
+really-clean: clean clean-versioned
+	rm -f draft-*.txt draft-*.html draft-*.pdf draft-*.redxml
+
+fresh-idnits: clean-versioned
+	$(MAKE) next
+	$(MAKE) idnits
