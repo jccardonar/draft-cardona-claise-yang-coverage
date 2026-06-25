@@ -13,7 +13,7 @@
 <rfc category="info" docName="draft-cardona-claise-onion-yang-coverage-latest" ipr="trust200902">
   <front>
     <title abbrev="YANG Module Coverage">Guidelines for YANG Example Validation and Coverage Analysis in IETF Documents</title>
-    
+
     <author fullname="Camilo Cardona" initials="C." surname="Cardona">
       <organization>NTT</organization>
       <address>
@@ -27,24 +27,24 @@
         <email>camilo@gin.ntt.net</email>
       </address>
     </author>
-    
+
     <author fullname="Benoit Claise" initials="B." surname="Claise">
       <organization>Everything OPS</organization>
       <address>
         <email>benoit@everything-ops.net</email>
       </address>
     </author>
-    
+
     <date year="2025"/>
-    
+
     <area>Operations and Management</area>
     <workgroup>Network Modeling</workgroup>
-    
+
     <keyword>YANG</keyword>
     <keyword>validation</keyword>
     <keyword>examples</keyword>
     <keyword>coverage</keyword>
-    
+
     <abstract>
       <t>This document defines guidelines for including YANG example instances in IETF documents in a way that enables automatic extraction and validation. It introduces the concept of YANG module "coverage" to measure how thoroughly example instances exercise a YANG module's data nodes. The goal is to improve the quality and usability of YANG models in IETF documents by providing authors with tools to validate their examples and assess coverage completeness.</t>
     </abstract>
@@ -145,18 +145,18 @@
 
       <section title="Coverage Example">
         <t>Consider this simple YANG module:</t>
-        
+
         <figure>
           <artwork><![CDATA[
 module example-device {
   namespace "http://example.com/device";
   prefix "dev";
-  
+
   container device {
     leaf hostname { type string; }
     leaf location { type string; }
     leaf admin-state { type boolean; }
-    
+
     list interface {
       key "name";
       leaf name { type string; }
@@ -167,9 +167,9 @@ module example-device {
 }
           ]]></artwork>
         </figure>
-        
+
         <t>And this example instance:</t>
-        
+
         <figure>
           <artwork><![CDATA[
 <CODE BEGINS> file "device-config.instance.xml"
@@ -183,23 +183,23 @@ module example-device {
 <CODE ENDS>
           ]]></artwork>
         </figure>
-        
+
         <t>Coverage analysis shows:</t>
         <t>- Total data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)</t>
         <t>- Covered nodes: 3 (hostname, interface/name, interface/enabled)</t>
         <t>- Coverage percentage: 50%</t>
-        
+
         <t>Non-coverage tree (missing nodes):</t>
         <figure>
           <artwork><![CDATA[
 device
-├── location 
+├── location
 ├── admin-state
 └── interface
     └── other
           ]]></artwork>
         </figure>
-        
+
         <t>This analysis helps authors identify that the 'location' and 'admin-state' leafs need examples.</t>
       </section>
 
