@@ -1,4 +1,4 @@
-<!-- regenerate: off (set to off if you edit this file) -->
+<!-- regenerate: on (set to off if you edit this file) -->
 
 # Guidelines for YANG Example Validation and Coverage Analysis in IETF Documents
 

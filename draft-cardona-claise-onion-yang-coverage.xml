@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc [
+  <!ENTITY RFC2119 SYSTEM "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+  <!ENTITY RFC8174 SYSTEM "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
+]>
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
 <?rfc tocdepth="3"?>
@@ -44,16 +48,42 @@
     <keyword>coverage</keyword>
 
     <abstract>
-      <t>This document defines guidelines for including YANG example instances in IETF documents in a way that enables automatic extraction and validation. It introduces the concept of YANG module "coverage" to measure how thoroughly example instances exercise a YANG module's data nodes. The goal is to improve the quality and usability of YANG models in IETF documents by providing authors with tools to validate their examples and assess coverage completeness.</t>
+      <t>This document defines guidelines for including YANG example instances
+          in IETF documents in a way that enables automatic extraction and
+          validation. It introduces the concept of YANG module "coverage" to
+          measure how thoroughly example instances exercise a YANG module's
+          data nodes. The goal is to improve the quality and usability of YANG
+          models in IETF documents by providing authors with tools to validate
+          their examples and assess coverage completeness.</t>
     </abstract>
   </front>
 
   <middle>
     <section>
       <name>Introduction</name>
-      <t>Although the YANG data modeling language has been in use for over a decade, there remains a lack of tooling to help YANG model authors analyze and validate their YANG modules and example instances. People defining or evaluating YANG modules have limited guidance on how to include and test example data for those modules. Example data instances are vital to illustrate how a model is intended to be used, but the guidelines for presenting and validating these examples are scarce. The updated guidelines in RFC 9907 improve the situation, but gaps still exist in providing tools that can automatically give authors feedback on what they might be missing in their models.</t>
+      <t>Although the YANG data modeling language has been in use for over a
+          decade, there remains a lack of tooling to help YANG model authors
+          analyze and validate their YANG modules and example instances. People
+          defining or evaluating YANG modules have limited guidance on how to
+          include, extract, test, and evaluate the impact of example data for those modules.
+          Example data instances are vital to illustrate how a model is
+          intended to be used. <xref target="RFC9907"/> provides guidelines for authors and
+          reviewers of documents containing YANG data models, including
+          recommendations for usage examples and validation of valid data instances.
+           The YANG data modeling language itself is specified in <xref target="RFC7950"/>
+           However, gaps still exist in defining conventions and tools that can
+          automatically extract examples, validate them, and give authors
+          feedback on what they might be missing in their models.</t>
 
-      <t>The objective of this document is to define guidelines that enable the development of tools which, given one or more IETF documents (RFCs or drafts), can verify that the YANG model examples in those documents are correct and sufficiently comprehensive. To achieve this, we address two main aspects:</t>
+      <t>
+         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+         "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in <xref target="RFC2119"/> <xref target="RFC8174"/>
+         when, and only when, they appear in all capitals, as shown here.
+      </t>
+
+      <t>The objective of this document is to define guidelines that enable the development of tools which, given one or more IETF documents (RFCs or drafts), can extract YANG model examples, validate that they are correct, and analyze whether they sufficiently cover the model. To achieve this, we address two main aspects:</t>
 
       <ul>
         <li>Guidelines for Including YANG Examples in RFCs: A clear method for authors to include example data instances of YANG models in IETF documents in a way that tools can automatically extract and validate them. In addition, we outline how tools can perform this extraction and validation, and we propose a method to include extra YANG modules (when necessary) for validating more complex examples without affecting the main normative content.</li>
@@ -61,40 +91,38 @@
       </ul>
 
       <t>Scope: The proposals in this document focus on typical use cases. It is expected that proof-of-concept tools will confirm the viability of these methods for moderately complex examples as this document progresses. If such automatic validation proves infeasible in practice, the approach may need adjustment. Extremely complex example scenarios (e.g., those involving schema mount or highly dynamic state) are outside the current scope and could be addressed in future work.</t>
+
     </section>
 
     <section>
       <name>Including YANG Example Instances in IETF Documents</name>
-      <t>When authors include example YANG instances in an RFC or Internet-Draft, those example instances SHOULD be formatted in a way that allows automatic extraction and validation by tools.</t>
+      <t>When authors include example YANG instances in an RFC or Internet-Draft, those example instances are RECOMMENDED to be formatted in a way that allows automatic extraction and validation by tools.</t>
 
-      <t>Specifically, example instances SHOULD be enclosed as code blocks using the CODE BEGINS / CODE ENDS convention (as defined in the updated guidelines, e.g., RFC 9907). They should also be given a file name that clearly identifies them as examples, analogous to how YANG modules are named (see RFC 9907). We propose that the file name ends with the suffix .instance.xml for XML instances or .instance.json for JSON instances. This naming convention makes it easy for tools to identify which code snippets are YANG instance examples that can be parsed and validated.</t>
+      <t>Specifically, example instances SHOULD be enclosed as code blocks using the CODE BEGINS / CODE ENDS convention in the rendered document. In RFCXML, this can be achieved with a sourcecode element that uses a name attribute and the markers attribute. They should be given a file name that clearly identifies them as examples, analogous to how YANG modules are named (see <xref target="RFC9907"/>). We propose that the name of valid example instances start with the prefix `yang/examples/valid-` and end with `.xml` for XML instances or `.json` for JSON instances. This naming convention makes it easy for tools to identify which code snippets are YANG instance examples that can be parsed and validated. The intent is not to replace the example-validation guidance in <xref target="RFC9907"/>, but to make that guidance easier to apply automatically. This convention tries to align itself with the repository layout used by the "Internet-Draft with YANG Modules" template <xref target="I-D-WITH-YANG-TEMPLATE"/>.</t>
+
 
       <t>Each example file name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). Tools may complain or error out if they encounter duplicate example file names, since that could indicate conflicting or repeated content. For example, an XML instance might be included as:</t>
 
-      <sourcecode type="text"><![CDATA[
-<CODE BEGINS> file "interface-config.instance.xml"
+      <sourcecode type="xml" name="yang/examples/valid-interface-config.xml" markers="true"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <data> ... </data>
-<CODE ENDS>
       ]]></sourcecode>
 
       <t>And a JSON instance as:</t>
 
-      <sourcecode type="text"><![CDATA[
-<CODE BEGINS> file "interface-config.instance.json"
+      <sourcecode type="json" name="yang/examples/valid-interface-config.json" markers="true"><![CDATA[
 {
   "interface": { ... }
 }
-<CODE ENDS>
       ]]></sourcecode>
 
-      <t>By following this approach, a tool can scan the document for code blocks with filenames ending in .instance.xml or .instance.json, extract their contents, and validate them against the appropriate YANG modules.</t>
+      <t>By following this approach, a tool can scan the RFCXML source or the rendered document for code blocks whose file names are under "yang/examples/", start with "valid-", and end in ".xml" or ".json", extract their contents, and validate them against the appropriate YANG modules.</t>
 
-      <t>In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might choose not to use the CODE BEGINS/CODE ENDS markers or might omit the special .instance.xml/.json filename suffix for such a snippet. Without the markers or filename, the tool will know not to treat that snippet as a YANG instance example to be validated. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples machine-checkable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.</t>
+      <t>In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might choose not to use the CODE BEGINS/CODE ENDS markers, might not place the snippet under "yang/examples/", or might not use the "valid-" prefix for such a snippet. Without the markers or filename convention, the tool will know not to treat that snippet as a YANG instance example to be validated. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples machine-checkable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.</t>
 
       <section>
         <name>Types of Example Validation</name>
-        <t>Not all example instances are the same in terms of validation. Many YANG examples in documentation are simple and only involve the module defined in the document, but in more complex scenarios an example might span multiple modules or need knowledge of deviations, features, or other context. For the latter, wrapping the example in an instance data file format (defined by RFC 9195) can make explicit which modules and context are in use. This approach can handle more complicated example validation at the cost of a bit more verbosity. (If a given example scenario is too complex to easily capture even with the instance-data file format - for example, requiring extensive setup or dynamic state - it is considered out of scope for automatic validation in this document.) We distinguish between two categories of examples for validation purposes:</t>
+        <t>Not all example instances are the same in terms of validation. Many YANG examples in documentation are simple and only involve the module defined in the document, but in more complex scenarios an example might span multiple modules or need knowledge of deviations, features, or other context. For the latter, wrapping the example in an instance data file format (defined by <xref target="RFC9195"/>) can make explicit which modules and context are in use. This approach can handle more complicated example validation at the cost of a bit more verbosity. (If a given example scenario is too complex to easily capture even with the instance-data file format - for example, requiring extensive setup or dynamic state - it is considered out of scope for automatic validation in this document.) We distinguish between two categories of examples for validation purposes:</t>
 
         <section>
           <name>Simple Validation Examples</name>
@@ -103,9 +131,9 @@
 
         <section>
           <name>Complex Examples with External References</name>
-          <t>These are examples that require additional context or external modules beyond those defined in the current document. For example, an instance data set may involve multiple modules (perhaps a module from this draft plus some from other RFCs), or it might describe operational state data that requires a specific datastore context or feature set. For such cases, we propose that the example be presented as a self-contained YANG instance data file using the standard format defined in RFC 9195 (the YANG Instance Data File Format). In practice, this means the example should be wrapped in the instance-data-set structure which includes the necessary metadata (such as module names, revisions, feature toggle states, and target datastore) for validation.</t>
+          <t>These are examples that require additional context or external modules beyond those defined in the current document. For example, an instance data set may involve multiple modules (perhaps a module from this draft plus some from other RFCs), or it might describe operational state data that requires a specific datastore context or feature set. For such cases, we propose that the example be presented as a self-contained YANG instance data file using the standard format defined in <xref target="RFC9195"/> (the YANG Instance Data File Format). In practice, this means the example should be wrapped in the instance-data-set structure which includes the necessary metadata (such as module names, revisions, feature toggle states, and target datastore) for validation.</t>
 
-          <t>For an XML-formatted complex example, the first element of the snippet should be &lt;instance-data-set xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-instance-data"&gt;, with the content formatted according to RFC 9195. Inside this element, sub-elements specify what YANG content schema the instance data conforms to (including module names, revision dates, features, deviations, and the intended datastore). Similarly, for a JSON-formatted complex example, the top-level JSON object should have a single key "ietf-yang-instance-data:instance-data-set", whose value is an object providing the same kind of metadata and the actual data set. By using the RFC 9195 instance-data-set wrapper, all the information needed to validate the instance is included within the text itself. A validation tool like yanglint (with appropriate support for RFC 9195) can read the instance-data-set, automatically load the indicated modules and their revisions, apply any stated deviations or feature enables, and then verify the embedded data content against the assembled schema. Note that if a tool detects that an example instance uses the RFC 9195 instance data format, it will attempt to validate it accordingly - and the example instance will fail validation if it does not conform to the declared schema or constraints.</t>
+          <t>For an XML-formatted complex example, the first element of the snippet should be &lt;instance-data-set xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-instance-data"&gt;, with the content formatted according to <xref target="RFC9195"/>. Inside this element, sub-elements specify what YANG content schema the instance data conforms to (including module names, revision dates, features, deviations, and the intended datastore). Similarly, for a JSON-formatted complex example, the top-level JSON object should have a single key "ietf-yang-instance-data:instance-data-set", whose value is an object providing the same kind of metadata and the actual data set. By using the <xref target="RFC9195"/> instance-data-set wrapper, all the information needed to validate the instance is included within the text itself. A validation tool like yanglint (with appropriate support for <xref target="RFC9195"/>) can read the instance-data-set, automatically load the indicated modules and their revisions, apply any stated deviations or feature enables, and then verify the embedded data content against the assembled schema. Note that if a tool detects that an example instance uses the <xref target="RFC9195"/> instance data format, it will attempt to validate it accordingly - and the example instance will fail validation if it does not conform to the declared schema or constraints.</t>
         </section>
       </section>
 
@@ -116,8 +144,8 @@
         <t>To illustrate how a deviation or augmentation affects the data, an RFC might need to include a small auxiliary YANG module (for example, a module that contains deviation statements targeting the base model) purely for use in the example validation. The challenge is to do this without confusing readers or tools and without "contaminating" the main normative content of the document. We propose the following guidelines for including such auxiliary YANG modules in examples:</t>
 
         <ul>
-          <li>Use a Distinct File Extension: Include the auxiliary module as a code block with a filename that uses a different extension than ".yang". For example, use a suffix like .dyang for a deviation/augmentation module that is only for the example. Using a non-standard extension ensures that general YANG module extraction tools will not treat it as a normative YANG module from the document. Any example that requires this auxiliary module can then reference it by its filename (with the .dyang extension) when running the validation tool.</li>
-          <li>Clearly Identify the Module as Non-Normative: The auxiliary module should be clearly identified as an example-only, non-normative module. This can be achieved through both its naming and its content. For instance, the CODE BEGINS label could name it something like "example-device-deviations.dyang" (including words like "example" or "dev" in the filename to signal its purpose). In the module source itself, use a module name and namespace that indicate it is not an official module. For example, use a namespace URI containing "example.com" or similar, and perhaps a module name ending in -example or with a clearly indicative name.</li>
+            <li>Keep Auxiliary Modules Separate: Include the auxiliary module in a way that makes it clear that it is not a normative YANG module from the document. This can be done with a dedicated directory (e.g. the file name starts with `auxiliary_modules/`), or a local meaninful extension. Any example that requires this auxiliary module would need to reference reference it by its full path when running the validation tool.</li>
+          <li>Clearly Identify the Module as Non-Normative: The auxiliary module should be clearly identified as an example-only, non-normative module. This can be achieved through both its naming and its content. For instance, the file name can include words like "example" or "dev" to signal its purpose. In the module source itself, use a module name and namespace that indicate it is not an official module. For example, use a namespace URI containing "example.com" or similar, and perhaps a module name ending in -example or with a clearly indicative name.</li>
           <li>Explain in the Narrative: In the text surrounding the code, explicitly state that this module is an auxiliary construct provided for the sake of the example. For instance: "The following YANG module is an example showing how a deviation could be used for this scenario; it is not a normative part of this specification." This clarification is important for human readers and reviewers to avoid any confusion.</li>
         </ul>
 
@@ -129,15 +157,15 @@
       <name>YANG Module Coverage by Examples</name>
       <t>Providing examples in YANG model documents is not just helpful for readers, but can also improve the quality of the model itself. We introduce the concept of YANG module coverage as a way to measure how thoroughly the provided examples exercise the data model.</t>
 
-      <t>By analogy to code coverage in software testing (which checks what fraction of code is executed by tests), YANG module coverage looks at what fraction of a module's schema nodes are present in at least one of the example instances. More specifically, we can define coverage as the set of data nodes (particularly leaf nodes) from the YANG module that have a value in one or more example instances. A simple quantitative metric could be the percentage of the module's leaf nodes that appear in at least one example.</t>
+      <t>By analogy to code coverage in software testing (which checks what fraction of code is executed by tests), YANG module coverage looks at what fraction of a module's data nodes are present in at least one of the example instances. For the baseline metric, coverage is defined over terminal data nodes, that is, leaf and leaf-list nodes from the YANG module that have a value in one or more example instances. A simple quantitative metric could be the percentage of the module's leaf and leaf-list nodes that appear in at least one example.</t>
 
       <t>For instance, if a YANG module defines 100 configurable or state leaf nodes, and the examples collectively include 45 of those leaves, one could say the example coverage is 45%. This number, while not telling the whole story, gives an indication of how much of the model's functionality is demonstrated by the examples. Low coverage might suggest that important parts of the model are never shown in any example. This could mean those parts are either less relevant or simply that the document might benefit from additional examples to cover them.</t>
 
-      <t>Probably more helpful than the coverage percentage, we can also define a "non-coverage tree" - essentially a view of the data model highlighting the nodes that were not covered by any example. This is perhaps the most direct way of showing the authors which portions of their model remain unused in the examples. For example, a tool could output a tree or list of all leaf nodes not present in any example instance, indicating potential gaps in example coverage.</t>
+      <t>Probably more helpful than the coverage percentage, we can also define an "uncovered-node tree" - essentially a view of the data model highlighting the nodes that were not covered by any example. This is perhaps the most direct way of showing the authors which portions of their model remain unused in the examples. For example, a tool could output a tree or list of all leaf and leaf-list nodes not present in any example instance, indicating potential gaps in example coverage.</t>
 
       <t>This kind of feedback can help authors identify gaps and improve their documents. If a particular feature or branch of the model has no example, the authors might choose to add one for completeness or clarity. In some cases, it might reveal that certain parts of the model are hard to exemplify or not yet implemented, which could prompt re-thinking that part of the design or at least adding an explanation for why it's not covered by any example.</t>
 
-      <t>Coverage works directly on the data nodes from the YANG  module. It should be as simple as possible, therefore, we will consider that any data leaf under a list is covered if there is at least an example with an instance of the list that includes the leaf. That is, for a list with 2 different leafs, one leaf covered under one key and another under another one will still yield a 100% coverage of the list.</t>
+      <t>Coverage works directly on the data nodes from the YANG module. It should be as simple as possible, therefore, we will consider that any data leaf or leaf-list under a list is covered if there is at least an example with an instance of the list that includes it. That is, for a list with 2 different leaves, one leaf covered under one key and another under another one will still yield a 100% coverage of the list leaves.</t>
 
       <section>
         <name>Coverage Example</name>
@@ -167,7 +195,7 @@ module example-device {
 
         <t>And this example instance:</t>
 
-        <sourcecode type="xml" name="device-config.instance.xml" markers="true"><![CDATA[
+        <sourcecode type="xml" name="yang/examples/valid-device-config.xml" markers="true"><![CDATA[
 <device xmlns="http://example.com/device">
   <hostname>router1</hostname>
   <interface>
@@ -178,22 +206,22 @@ module example-device {
         ]]></sourcecode>
 
         <t>Coverage analysis shows:</t>
-        <t>- Total data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)</t>
+        <t>- Total terminal data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)</t>
         <t>- Covered nodes: 3 (hostname, interface/name, interface/enabled)</t>
         <t>- Coverage percentage: 50%</t>
 
-        <t>Non-coverage tree (missing nodes):</t>
+        <t>Uncovered-node tree (missing nodes):</t>
         <figure>
           <artwork><![CDATA[
 device
-+-- location
-+-- admin-state
-+-- interface
-    +-- other
+- location
+- admin-state
+- interface
+  - other
           ]]></artwork>
         </figure>
 
-        <t>This analysis helps authors identify that the 'location' and 'admin-state' leafs need examples.</t>
+        <t>This analysis helps authors identify that the 'location' and 'admin-state' leaves need examples.</t>
       </section>
 
       <section>
@@ -202,16 +230,41 @@ device
 
         <t>For the concept of YANG packages <xref target="I-D.ietf-netmod-yang-packages"/>, the coverage across the entire package might be of interest.</t>
 
-        <t> For the to-be-created ONIONS Working Group, the coverage across (service) abstractions might be of interest.</t>
+        <t> For the to-be-created ONSEN Working Group, the coverage across (service) abstractions might be of interest.</t>
       </section>
     </section>
 
+      <section>
+  <name>Open Issues and Future Work</name>
+
+  <t>The baseline metric in this document is intentionally limited to leaf and leaf-list coverage. Feedback received on version -00 identified additional useful information that is not naturally represented by the baseline uncovered-node tree.</t>
+
+  <ul>
+    <li>Union member types: If a covered leaf is of type union, a future version can define how to report which union member types were exercised by the example instances. The leaf itself may already be covered, while only some of its possible member types were used. Reporting this properly requires an uncovered tree format beyond the YANG tree definition from <xref target="RFC8340"/>.</li>
+
+    <li>Enumeration values: If a covered leaf is of type enumeration, a future version can define whether tools should report which enumeration values were exercised by the example instances. Similar to the case of Union member types, we will need to expand the defintion of YANG tree from <xref target="RFC8340"/> to show this values.</li>
+
+    <li>Presence containers: A future version can define whether instantiating a presence container counts as coverage independently from the leaves below it. This is a separate question from the baseline leaf and leaf-list metric because a presence container can carry meaning by existing.</li>
+
+    <li>Groupings: The proof-of-concept implementation already handles the schema nodes created by uses of a grouping. Further work is needed to decide whether grouping-specific metrics are useful, and how they should be reported without confusing abstract grouping definitions with instantiated schema nodes.</li>
+
+    <li>Modules without data nodes: A future version can define clearer reporting for modules that primarily contain groupings, typedefs, identities, extensions, RPCs, actions, or notifications, where the baseline data-node coverage metric may not apply.</li>
+  </ul>
+
+</section>
+
+
     <section>
-      <name>Implementation</name>
+  <name>Implementation</name>
 
-    <t>TODO. The progress of this document depends on the correct operation of its proposal in cases of relative complexity using an actual implementation.</t>
+  <t>A proof-of-concept implementation has been developed in the yangson-coverage repository <xref target="YANGSON-COVERAGE"/>. The implementation uses Yangson <xref target="YANGSON"/> as a library for loading YANG modules and validating instance data, and then implements the coverage logic described in this document.</t>
 
-    </section>
+  <t>Yangson already exposes validation counters for schema nodes and can print a complete schema tree annotated with those counters. This is useful input, but it is not the report format defined here. The proof of concept tracks covered leaves across validated examples and generates the uncovered-node tree described in this document: covered terminal nodes are removed, and parent nodes are kept only as context.</t>
+
+  <t>The proof of concept also provides a command-line interface to reset coverage state, validate examples while accumulating coverage, and print the uncovered-node report. It includes initial support for grouping-level reporting, while the exact grouping metrics remain future work.</t>
+
+  <t>Other related tooling includes yanglint <xref target="YANGLINT"/>, example validation scripts such as yang-validation <xref target="YANG-VALIDATION"/>, the "Internet-Draft with YANG Modules" template <xref target="I-D-WITH-YANG-TEMPLATE"/>, and the associated I-D-with-yang-tools repository <xref target="I-D-WITH-YANG-TOOLS"/>. These tools and templates support validation of YANG modules, tree generation, and validation of examples.</t>
+</section>
 
     <section>
       <name>Conclusion</name>
@@ -227,22 +280,76 @@ device
 
     <section anchor="Security">
       <name>Security Considerations</name>
-      <t>This document defines guidelines for including and validating YANG examples in IETF documents. The recommendations do not introduce new security risks. However, implementers of validation tools should be aware of potential security considerations when processing example data from untrusted sources, such as denial of service attacks through maliciously crafted large or complex examples.</t>
+      <t>This document defines guidelines for including and validating YANG examples in IETF documents. The recommendations do not introduce new security risks. However, implementers of validation tools should be aware of potential security considerations when processing example data, auxiliary modules, or repository contents from untrusted sources, such as denial of service attacks through maliciously crafted large or complex examples.</t>
     </section>
   </middle>
   <back>
     <references>
       <name>Normative References</name>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/>
     </references>
 
     <references>
       <name>Informative References</name>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/>
+      &RFC2119;
+      &RFC8174;
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8340.xml"/>
+      <reference anchor="YANGSON" target="https://yangson.labs.nic.cz/">
+        <front>
+          <title>Yangson Documentation</title>
+          <author>
+            <organization>CZ.NIC</organization>
+          </author>
+        </front>
+      </reference>
+      <reference anchor="YANGLINT" target="https://github.com/CESNET/libyang">
+        <front>
+          <title>libyang and yanglint Repository</title>
+          <author>
+            <organization>CESNET</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-yang-packages.xml"/>
+      <reference anchor="I-D-WITH-YANG-TEMPLATE" target="https://github.com/IETF-OPS-AD/I-D-with-yang-template">
+        <front>
+          <title>"Internet-Draft with YANG Modules" Template Repository</title>
+          <author>
+            <organization>IETF OPS AD</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+      <reference anchor="I-D-WITH-YANG-TOOLS" target="https://github.com/IETF-OPS-AD/I-D-with-yang-tools">
+        <front>
+          <title>I-D-with-yang-tools Repository</title>
+          <author>
+            <organization>IETF OPS AD</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+      <reference anchor="YANG-VALIDATION" target="https://github.com/Linutronix/yang-validation">
+        <front>
+          <title>yang-validation Repository</title>
+          <author>
+            <organization>Linutronix</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+      <reference anchor="YANGSON-COVERAGE" target="https://github.com/jccardonar/yangson-coverage/">
+        <front>
+          <title>yang-coverage proof-of-concept Repository</title>
+          <author>
+            <organization>Camilo Cardona-Benoit Claise</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
     </references>
   </back>
 </rfc>

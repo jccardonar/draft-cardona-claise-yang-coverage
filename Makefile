@@ -1,5 +1,6 @@
 LIBDIR := lib
 .DEFAULT_GOAL := all
+TEXT_PAGINATION := true
 
 .PHONY: clean-versioned really-clean fresh-next fresh-idnits
 

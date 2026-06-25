@@ -23,3 +23,5 @@ package-lock.json
 report.xml
 yang_coverage_tmp_presentations
 !requirements.txt
+
+.DS_Store
