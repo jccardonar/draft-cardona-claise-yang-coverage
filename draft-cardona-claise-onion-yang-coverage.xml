@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-cardona-claise-onion-yang-coverage-00" ipr="trust200902">
+<rfc category="info" docName="draft-cardona-claise-onion-yang-coverage-latest" ipr="trust200902">
   <front>
     <title abbrev="YANG Module Coverage">Guidelines for YANG Example Validation and Coverage Analysis in IETF Documents</title>
     
