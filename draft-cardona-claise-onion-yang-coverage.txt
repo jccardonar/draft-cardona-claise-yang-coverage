@@ -50,28 +50,37 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 1]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
-   1.  Introduction
-   2.  Including YANG Example Instances in IETF Documents
-     2.1.  Types of Example Validation
-       2.1.1.  Simple Validation Examples
-       2.1.2.  Complex Examples with External References
-     2.2.  Including Auxiliary YANG Modules for Examples
-   3.  YANG Module Coverage by Examples
-     3.1.  Coverage Example
-     3.2.  Coverage Across Multiple Documents
-   4.  Implementation
-   5.  Conclusion
-   6.  IANA Considerations
-   7.  Security Considerations
-   8.  Normative References
-   9.  Informative References
-   Authors' Addresses
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Including YANG Example Instances in IETF Documents  . . . . .   3
+     2.1.  Types of Example Validation . . . . . . . . . . . . . . .   5
+       2.1.1.  Simple Validation Examples  . . . . . . . . . . . . .   5
+       2.1.2.  Complex Examples with External References . . . . . .   5
+     2.2.  Including Auxiliary YANG Modules for Examples . . . . . .   6
+   3.  YANG Module Coverage by Examples  . . . . . . . . . . . . . .   7
+     3.1.  Coverage Example  . . . . . . . . . . . . . . . . . . . .   8
+     3.2.  Coverage Across Multiple Documents  . . . . . . . . . . .  10
+   4.  Open Issues and Future Work . . . . . . . . . . . . . . . . .  10
+   5.  Implementation  . . . . . . . . . . . . . . . . . . . . . . .  11
+   6.  Conclusion  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  12
+   10. Informative References  . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -79,18 +88,37 @@ Table of Contents
    decade, there remains a lack of tooling to help YANG model authors
    analyze and validate their YANG modules and example instances.
    People defining or evaluating YANG modules have limited guidance on
-   how to include and test example data for those modules.  Example data
-   instances are vital to illustrate how a model is intended to be used,
-   but the guidelines for presenting and validating these examples are
-   scarce.  The updated guidelines in RFC 9907 improve the situation,
-   but gaps still exist in providing tools that can automatically give
-   authors feedback on what they might be missing in their models.
+   how to include, extract, test, and evaluate the impact of example
+   data for those modules.  Example data instances are vital to
+   illustrate how a model is intended to be used.  [RFC9907] provides
+   guidelines for authors and reviewers of documents containing YANG
+   data models, including recommendations for usage examples and
+   validation of valid data instances.  The YANG data modeling language
+   itself is specified in [RFC7950] However, gaps still exist in
+   defining conventions and tools that can automatically extract
+   examples, validate them, and give authors feedback on what they might
+   be missing in their models.
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   [RFC2119] [RFC8174] when, and only when, they appear in all capitals,
+   as shown here.
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 2]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
    The objective of this document is to define guidelines that enable
    the development of tools which, given one or more IETF documents
-   (RFCs or drafts), can verify that the YANG model examples in those
-   documents are correct and sufficiently comprehensive.  To achieve
-   this, we address two main aspects:
+   (RFCs or drafts), can extract YANG model examples, validate that they
+   are correct, and analyze whether they sufficiently cover the model.
+   To achieve this, we address two main aspects:
 
    *  Guidelines for Including YANG Examples in RFCs: A clear method for
       authors to include example data instances of YANG models in IETF
@@ -119,18 +147,32 @@ Table of Contents
 2.  Including YANG Example Instances in IETF Documents
 
    When authors include example YANG instances in an RFC or Internet-
-   Draft, those example instances SHOULD be formatted in a way that
-   allows automatic extraction and validation by tools.
+   Draft, those example instances are RECOMMENDED to be formatted in a
+   way that allows automatic extraction and validation by tools.
 
    Specifically, example instances SHOULD be enclosed as code blocks
-   using the CODE BEGINS / CODE ENDS convention (as defined in the
-   updated guidelines, e.g., RFC 9907).  They should also be given a
-   file name that clearly identifies them as examples, analogous to how
-   YANG modules are named (see RFC 9907).  We propose that the file name
-   ends with the suffix .instance.xml for XML instances or
-   .instance.json for JSON instances.  This naming convention makes it
-   easy for tools to identify which code snippets are YANG instance
-   examples that can be parsed and validated.
+   using the CODE BEGINS / CODE ENDS convention in the rendered
+   document.  In RFCXML, this can be achieved with a sourcecode element
+   that uses a name attribute and the markers attribute.  They should be
+   given a file name that clearly identifies them as examples, analogous
+   to how YANG modules are named (see [RFC9907]).  We propose that the
+   name of valid example instances start with the prefix `yang/examples/
+   valid-` and end with `.xml` for XML instances or `.json` for JSON
+   instances.  This naming convention makes it easy for tools to
+   identify which code snippets are YANG instance examples that can be
+   parsed and validated.  The intent is not to replace the example-
+   validation guidance in [RFC9907], but to make that guidance easier to
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 3]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+   apply automatically.  This convention tries to align itself with the
+   repository layout used by the "Internet-Draft with YANG Modules"
+   template [I-D-WITH-YANG-TEMPLATE].
 
    Each example file name SHOULD be unique within a document (and
    ideally unique across related documents being analyzed together).
@@ -138,21 +180,22 @@ Table of Contents
    file names, since that could indicate conflicting or repeated
    content.  For example, an XML instance might be included as:
 
-   <CODE BEGINS> file "interface-config.instance.xml"
+   <CODE BEGINS> file "yang/examples/valid-interface-config.xml"
    <?xml version="1.0" encoding="UTF-8"?>
    <data> ... </data>
    <CODE ENDS>
 
    And a JSON instance as:
 
-   <CODE BEGINS> file "interface-config.instance.json"
+   <CODE BEGINS> file "yang/examples/valid-interface-config.json"
    {
      "interface": { ... }
    }
    <CODE ENDS>
 
-   By following this approach, a tool can scan the document for code
-   blocks with filenames ending in .instance.xml or .instance.json,
+   By following this approach, a tool can scan the RFCXML source or the
+   rendered document for code blocks whose file names are under "yang/
+   examples/", start with "valid-", and end in ".xml" or ".json",
    extract their contents, and validate them against the appropriate
    YANG modules.
 
@@ -161,14 +204,27 @@ Table of Contents
    fragment, or intentionally invalid to illustrate an error), the
    author can indicate this so that automated validators skip it.  For
    example, an author might choose not to use the CODE BEGINS/CODE ENDS
-   markers or might omit the special .instance.xml/.json filename suffix
-   for such a snippet.  Without the markers or filename, the tool will
-   know not to treat that snippet as a YANG instance example to be
-   validated.  An author could also include an explicit note in the text
-   indicating that a given snippet is not for validation.  Using these
-   conventions strikes a balance between making examples machine-
-   checkable and allowing flexibility for authors to include non-valid
-   illustrative snippets when necessary.
+   markers, might not place the snippet under "yang/examples/", or might
+   not use the "valid-" prefix for such a snippet.  Without the markers
+   or filename convention, the tool will know not to treat that snippet
+   as a YANG instance example to be validated.  An author could also
+   include an explicit note in the text indicating that a given snippet
+   is not for validation.  Using these conventions strikes a balance
+   between making examples machine-checkable and allowing flexibility
+   for authors to include non-valid illustrative snippets when
+   necessary.
+
+
+
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 4]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
 2.1.  Types of Example Validation
 
@@ -177,7 +233,7 @@ Table of Contents
    defined in the document, but in more complex scenarios an example
    might span multiple modules or need knowledge of deviations,
    features, or other context.  For the latter, wrapping the example in
-   an instance data file format (defined by RFC 9195) can make explicit
+   an instance data file format (defined by [RFC9195]) can make explicit
    which modules and context are in use.  This approach can handle more
    complicated example validation at the cost of a bit more verbosity.
    (If a given example scenario is too complex to easily capture even
@@ -209,7 +265,7 @@ Table of Contents
    operational state data that requires a specific datastore context or
    feature set.  For such cases, we propose that the example be
    presented as a self-contained YANG instance data file using the
-   standard format defined in RFC 9195 (the YANG Instance Data File
+   standard format defined in [RFC9195] (the YANG Instance Data File
    Format).  In practice, this means the example should be wrapped in
    the instance-data-set structure which includes the necessary metadata
    (such as module names, revisions, feature toggle states, and target
@@ -218,21 +274,29 @@ Table of Contents
    For an XML-formatted complex example, the first element of the
    snippet should be <instance-data-set
    xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-instance-data">, with
-   the content formatted according to RFC 9195.  Inside this element,
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 5]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+   the content formatted according to [RFC9195].  Inside this element,
    sub-elements specify what YANG content schema the instance data
    conforms to (including module names, revision dates, features,
    deviations, and the intended datastore).  Similarly, for a JSON-
    formatted complex example, the top-level JSON object should have a
    single key "ietf-yang-instance-data:instance-data-set", whose value
    is an object providing the same kind of metadata and the actual data
-   set.  By using the RFC 9195 instance-data-set wrapper, all the
+   set.  By using the [RFC9195] instance-data-set wrapper, all the
    information needed to validate the instance is included within the
    text itself.  A validation tool like yanglint (with appropriate
-   support for RFC 9195) can read the instance-data-set, automatically
+   support for [RFC9195]) can read the instance-data-set, automatically
    load the indicated modules and their revisions, apply any stated
    deviations or feature enables, and then verify the embedded data
    content against the assembled schema.  Note that if a tool detects
-   that an example instance uses the RFC 9195 instance data format, it
+   that an example instance uses the [RFC9195] instance data format, it
    will attempt to validate it accordingly - and the example instance
    will fail validation if it does not conform to the declared schema or
    constraints.
@@ -255,26 +319,31 @@ Table of Contents
    the main normative content of the document.  We propose the following
    guidelines for including such auxiliary YANG modules in examples:
 
-   *  Use a Distinct File Extension: Include the auxiliary module as a
-      code block with a filename that uses a different extension than
-      ".yang".  For example, use a suffix like .dyang for a deviation/
-      augmentation module that is only for the example.  Using a non-
-      standard extension ensures that general YANG module extraction
-      tools will not treat it as a normative YANG module from the
-      document.  Any example that requires this auxiliary module can
-      then reference it by its filename (with the .dyang extension) when
+   *  Keep Auxiliary Modules Separate: Include the auxiliary module in a
+      way that makes it clear that it is not a normative YANG module
+      from the document.  This can be done with a dedicated directory
+      (e.g. the file name starts with `auxiliary_modules/`), or a local
+      meaninful extension.  Any example that requires this auxiliary
+      module would need to reference reference it by its full path when
       running the validation tool.
 
    *  Clearly Identify the Module as Non-Normative: The auxiliary module
       should be clearly identified as an example-only, non-normative
       module.  This can be achieved through both its naming and its
-      content.  For instance, the CODE BEGINS label could name it
-      something like "example-device-deviations.dyang" (including words
-      like "example" or "dev" in the filename to signal its purpose).
-      In the module source itself, use a module name and namespace that
-      indicate it is not an official module.  For example, use a
-      namespace URI containing "example.com" or similar, and perhaps a
-      module name ending in -example or with a clearly indicative name.
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 6]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+      content.  For instance, the file name can include words like
+      "example" or "dev" to signal its purpose.  In the module source
+      itself, use a module name and namespace that indicate it is not an
+      official module.  For example, use a namespace URI containing
+      "example.com" or similar, and perhaps a module name ending in
+      -example or with a clearly indicative name.
 
    *  Explain in the Narrative: In the text surrounding the code,
       explicitly state that this module is an auxiliary construct
@@ -303,12 +372,27 @@ Table of Contents
 
    By analogy to code coverage in software testing (which checks what
    fraction of code is executed by tests), YANG module coverage looks at
-   what fraction of a module's schema nodes are present in at least one
-   of the example instances.  More specifically, we can define coverage
-   as the set of data nodes (particularly leaf nodes) from the YANG
-   module that have a value in one or more example instances.  A simple
-   quantitative metric could be the percentage of the module's leaf
-   nodes that appear in at least one example.
+   what fraction of a module's data nodes are present in at least one of
+   the example instances.  For the baseline metric, coverage is defined
+   over terminal data nodes, that is, leaf and leaf-list nodes from the
+   YANG module that have a value in one or more example instances.  A
+   simple quantitative metric could be the percentage of the module's
+   leaf and leaf-list nodes that appear in at least one example.
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 7]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
    For instance, if a YANG module defines 100 configurable or state leaf
    nodes, and the examples collectively include 45 of those leaves, one
@@ -321,12 +405,13 @@ Table of Contents
    cover them.
 
    Probably more helpful than the coverage percentage, we can also
-   define a "non-coverage tree" - essentially a view of the data model
-   highlighting the nodes that were not covered by any example.  This is
-   perhaps the most direct way of showing the authors which portions of
-   their model remain unused in the examples.  For example, a tool could
-   output a tree or list of all leaf nodes not present in any example
-   instance, indicating potential gaps in example coverage.
+   define an "uncovered-node tree" - essentially a view of the data
+   model highlighting the nodes that were not covered by any example.
+   This is perhaps the most direct way of showing the authors which
+   portions of their model remain unused in the examples.  For example,
+   a tool could output a tree or list of all leaf and leaf-list nodes
+   not present in any example instance, indicating potential gaps in
+   example coverage.
 
    This kind of feedback can help authors identify gaps and improve
    their documents.  If a particular feature or branch of the model has
@@ -338,15 +423,32 @@ Table of Contents
 
    Coverage works directly on the data nodes from the YANG module.  It
    should be as simple as possible, therefore, we will consider that any
-   data leaf under a list is covered if there is at least an example
-   with an instance of the list that includes the leaf.  That is, for a
-   list with 2 different leafs, one leaf covered under one key and
-   another under another one will still yield a 100% coverage of the
-   list.
+   data leaf or leaf-list under a list is covered if there is at least
+   an example with an instance of the list that includes it.  That is,
+   for a list with 2 different leaves, one leaf covered under one key
+   and another under another one will still yield a 100% coverage of the
+   list leaves.
 
 3.1.  Coverage Example
 
    Consider this simple YANG module:
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 8]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
    module example-device {
      namespace "http://example.com/device";
@@ -370,7 +472,7 @@ Table of Contents
 
    And this example instance:
 
-   <CODE BEGINS> file "device-config.instance.xml"
+   <CODE BEGINS> file "yang/examples/valid-device-config.xml"
    <device xmlns="http://example.com/device">
      <hostname>router1</hostname>
      <interface>
@@ -382,25 +484,32 @@ Table of Contents
 
    Coverage analysis shows:
 
-   - Total data nodes: 6 (hostname, location, admin-state, interface/
-   name, interface/enabled, interface/other)
+   - Total terminal data nodes: 6 (hostname, location, admin-state,
+   interface/name, interface/enabled, interface/other)
 
    - Covered nodes: 3 (hostname, interface/name, interface/enabled)
 
    - Coverage percentage: 50%
 
-   Non-coverage tree (missing nodes):
+   Uncovered-node tree (missing nodes):
 
    device
-   +-- location
-   +-- admin-state
-   +-- interface
-       +-- other
+   - location
+   - admin-state
+   - interface
+     - other
+
+
+
+Cardona & Claise        Expires 27 December 2026                [Page 9]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
                                   Figure 2
 
    This analysis helps authors identify that the 'location' and 'admin-
-   state' leafs need examples.
+   state' leaves need examples.
 
 3.2.  Coverage Across Multiple Documents
 
@@ -423,16 +532,93 @@ Table of Contents
    For the concept of YANG packages [I-D.ietf-netmod-yang-packages], the
    coverage across the entire package might be of interest.
 
-   For the to-be-created ONIONS Working Group, the coverage across
+   For the to-be-created ONSEN Working Group, the coverage across
    (service) abstractions might be of interest.
 
-4.  Implementation
+4.  Open Issues and Future Work
 
-   TODO.  The progress of this document depends on the correct operation
-   of its proposal in cases of relative complexity using an actual
-   implementation.
+   The baseline metric in this document is intentionally limited to leaf
+   and leaf-list coverage.  Feedback received on version -00 identified
+   additional useful information that is not naturally represented by
+   the baseline uncovered-node tree.
 
-5.  Conclusion
+   *  Union member types: If a covered leaf is of type union, a future
+      version can define how to report which union member types were
+      exercised by the example instances.  The leaf itself may already
+      be covered, while only some of its possible member types were
+      used.  Reporting this properly requires an uncovered tree format
+      beyond the YANG tree definition from [RFC8340].
+
+   *  Enumeration values: If a covered leaf is of type enumeration, a
+      future version can define whether tools should report which
+      enumeration values were exercised by the example instances.
+      Similar to the case of Union member types, we will need to expand
+      the defintion of YANG tree from [RFC8340] to show this values.
+
+
+
+Cardona & Claise        Expires 27 December 2026               [Page 10]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+   *  Presence containers: A future version can define whether
+      instantiating a presence container counts as coverage
+      independently from the leaves below it.  This is a separate
+      question from the baseline leaf and leaf-list metric because a
+      presence container can carry meaning by existing.
+
+   *  Groupings: The proof-of-concept implementation already handles the
+      schema nodes created by uses of a grouping.  Further work is
+      needed to decide whether grouping-specific metrics are useful, and
+      how they should be reported without confusing abstract grouping
+      definitions with instantiated schema nodes.
+
+   *  Modules without data nodes: A future version can define clearer
+      reporting for modules that primarily contain groupings, typedefs,
+      identities, extensions, RPCs, actions, or notifications, where the
+      baseline data-node coverage metric may not apply.
+
+5.  Implementation
+
+   A proof-of-concept implementation has been developed in the yangson-
+   coverage repository [YANGSON-COVERAGE].  The implementation uses
+   Yangson [YANGSON] as a library for loading YANG modules and
+   validating instance data, and then implements the coverage logic
+   described in this document.
+
+   Yangson already exposes validation counters for schema nodes and can
+   print a complete schema tree annotated with those counters.  This is
+   useful input, but it is not the report format defined here.  The
+   proof of concept tracks covered leaves across validated examples and
+   generates the uncovered-node tree described in this document: covered
+   terminal nodes are removed, and parent nodes are kept only as
+   context.
+
+   The proof of concept also provides a command-line interface to reset
+   coverage state, validate examples while accumulating coverage, and
+   print the uncovered-node report.  It includes initial support for
+   grouping-level reporting, while the exact grouping metrics remain
+   future work.
+
+   Other related tooling includes yanglint [YANGLINT], example
+   validation scripts such as yang-validation [YANG-VALIDATION], the
+   "Internet-Draft with YANG Modules" template [I-D-WITH-YANG-TEMPLATE],
+   and the associated I-D-with-yang-tools repository
+   [I-D-WITH-YANG-TOOLS].  These tools and templates support validation
+   of YANG modules, tree generation, and validation of examples.
+
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026               [Page 11]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+6.  Conclusion
 
    By standardizing how YANG examples are included and validated, we
    make it easier for implementers and reviewers to trust that the
@@ -457,20 +643,36 @@ Table of Contents
    robust support for YANG examples and better validation practices in
    the near future.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-7.  Security Considerations
+8.  Security Considerations
 
    This document defines guidelines for including and validating YANG
    examples in IETF documents.  The recommendations do not introduce new
    security risks.  However, implementers of validation tools should be
    aware of potential security considerations when processing example
-   data from untrusted sources, such as denial of service attacks
-   through maliciously crafted large or complex examples.
+   data, auxiliary modules, or repository contents from untrusted
+   sources, such as denial of service attacks through maliciously
+   crafted large or complex examples.
 
-8.  Normative References
+9.  Normative References
+
+10.  Informative References
+
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
+
+
+
+
+Cardona & Claise        Expires 27 December 2026               [Page 12]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -489,12 +691,15 @@ Table of Contents
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
               2022, <https://www.rfc-editor.org/info/rfc9195>.
 
-9.  Informative References
+   [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
+              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
+              <https://www.rfc-editor.org/info/rfc8340>.
 
-   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
-              for Authors and Reviewers of Documents Containing YANG
-              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
-              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
+   [YANGSON]  CZ.NIC, "Yangson Documentation",
+              <https://yangson.labs.nic.cz/>.
+
+   [YANGLINT] CESNET, "libyang and yanglint Repository",
+              <https://github.com/CESNET/libyang>.
 
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., and J. Sterne, "YANG
@@ -502,6 +707,33 @@ Table of Contents
               netmod-yang-packages-07, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
               yang-packages-07>.
+
+   [I-D-WITH-YANG-TEMPLATE]
+              IETF OPS AD, ""Internet-Draft with YANG Modules" Template
+              Repository",
+              <https://github.com/IETF-OPS-AD/I-D-with-yang-template>.
+
+   [I-D-WITH-YANG-TOOLS]
+              IETF OPS AD, "I-D-with-yang-tools Repository",
+              <https://github.com/IETF-OPS-AD/I-D-with-yang-tools>.
+
+   [YANG-VALIDATION]
+              Linutronix, "yang-validation Repository",
+              <https://github.com/Linutronix/yang-validation>.
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026               [Page 13]
+
+Internet-Draft            YANG Module Coverage                 June 2026
+
+
+   [YANGSON-COVERAGE]
+              Camilo Cardona-Benoit Claise, "yang-coverage proof-of-
+              concept Repository",
+              <https://github.com/jccardonar/yangson-coverage/>.
 
 Authors' Addresses
 
@@ -516,3 +748,37 @@ Authors' Addresses
    Benoit Claise
    Everything OPS
    Email: benoit@everything-ops.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise        Expires 27 December 2026               [Page 14]
