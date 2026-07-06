@@ -5,13 +5,13 @@
 Network Modeling                                              C. Cardona
 Internet-Draft                                                       NTT
 Intended status: Informational                                 B. Claise
-Expires: 27 December 2026                        Everything OPS & Arrcus
-                                                            25 June 2026
+Expires: 7 January 2027                          Everything OPS & Arrcus
+                                                             6 July 2026
 
 
   Guidelines for YANG Example Validation and Coverage Analysis in IETF
                                Documents
-            draft-cardona-claise-onion-yang-coverage-latest
+            draft-cardona-claise-netmod-yang-coverage-latest
 
 Abstract
 
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 December 2026.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 1]
+Cardona & Claise         Expires 7 January 2027                 [Page 1]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 2]
+Cardona & Claise         Expires 7 January 2027                 [Page 2]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -165,9 +165,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 3]
+Cardona & Claise         Expires 7 January 2027                 [Page 3]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    name of valid example instances start with the prefix `yang/examples/
@@ -221,9 +221,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 4]
+Cardona & Claise         Expires 7 January 2027                 [Page 4]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    In cases where an included code snippet is not meant to represent a
@@ -277,9 +277,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 5]
+Cardona & Claise         Expires 7 January 2027                 [Page 5]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
 2.1.2.  Complex Examples with External References
@@ -333,9 +333,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 6]
+Cardona & Claise         Expires 7 January 2027                 [Page 6]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    To illustrate how a deviation or augmentation affects the data, an
@@ -389,9 +389,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 7]
+Cardona & Claise         Expires 7 January 2027                 [Page 7]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
 3.  YANG Module Coverage by Examples
@@ -445,9 +445,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 8]
+Cardona & Claise         Expires 7 January 2027                 [Page 8]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    Coverage works directly on the data nodes from the YANG module.  It
@@ -501,9 +501,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026                [Page 9]
+Cardona & Claise         Expires 7 January 2027                 [Page 9]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
            description "Interface name; the list key.";
@@ -557,9 +557,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 10]
+Cardona & Claise         Expires 7 January 2027                [Page 10]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
 3.2.  Coverage Across Multiple Documents
@@ -613,9 +613,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 11]
+Cardona & Claise         Expires 7 January 2027                [Page 11]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    *  Presence containers: A future version can define whether
@@ -669,9 +669,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 12]
+Cardona & Claise         Expires 7 January 2027                [Page 12]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
 6.  Conclusion
@@ -725,9 +725,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 13]
+Cardona & Claise         Expires 7 January 2027                [Page 13]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
@@ -781,9 +781,9 @@ Internet-Draft            YANG Module Coverage                 June 2026
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 14]
+Cardona & Claise         Expires 7 January 2027                [Page 14]
 
-Internet-Draft            YANG Module Coverage                 June 2026
+Internet-Draft            YANG Module Coverage                 July 2026
 
 
    [YANGSON-COVERAGE]
@@ -837,4 +837,4 @@ Authors' Addresses
 
 
 
-Cardona & Claise        Expires 27 December 2026               [Page 15]
+Cardona & Claise         Expires 7 January 2027                [Page 15]
