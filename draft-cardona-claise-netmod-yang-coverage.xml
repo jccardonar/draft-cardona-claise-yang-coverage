@@ -13,7 +13,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" version="3" category="info" docName="draft-cardona-claise-onion-yang-coverage-latest" ipr="trust200902">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" version="3" category="info" docName="draft-cardona-claise-netmod-yang-coverage-latest" ipr="trust200902">
   <front>
     <title abbrev="YANG Module Coverage">Guidelines for YANG Example Validation and Coverage Analysis in IETF Documents</title>
 
