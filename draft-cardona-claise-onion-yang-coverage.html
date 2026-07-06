@@ -12,9 +12,12 @@
           in IETF documents in a way that enables automatic extraction and
           validation. It introduces the concept of YANG module &quot;coverage&quot; to
           measure how thoroughly example instances exercise a YANG module's
-          data nodes. The goal is to improve the quality and usability of YANG
-          models in IETF documents by providing authors with tools to validate
-          their examples and assess coverage completeness. 
+          data nodes. By standardizing how YANG examples are included, validated, and
+          measured for coverage, these guidelines help authors catch errors
+          before publication and give reviewers and implementers greater
+          confidence that the examples in a specification are correct and
+          cover a sufficient range of scenarios - ultimately making the
+          underlying data models easier to implement and use. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="YANG" name="keyword">
@@ -35,7 +38,7 @@
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.1
+    wcwidth 0.8.2
 -->
 <link href="draft-cardona-claise-onion-yang-coverage.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1083,7 +1086,7 @@ svg {
 </div>
 <div class="author">
       <div class="author-name">B. Claise</div>
-<div class="org">Everything OPS</div>
+<div class="org">Everything OPS &amp; Arrcus</div>
 </div>
 </dd>
 </dl>
@@ -1095,9 +1098,12 @@ svg {
           in IETF documents in a way that enables automatic extraction and
           validation. It introduces the concept of YANG module "coverage" to
           measure how thoroughly example instances exercise a YANG module's
-          data nodes. The goal is to improve the quality and usability of YANG
-          models in IETF documents by providing authors with tools to validate
-          their examples and assess coverage completeness.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+          data nodes. By standardizing how YANG examples are included, validated, and
+          measured for coverage, these guidelines help authors catch errors
+          before publication and give reviewers and implementers greater
+          confidence that the examples in a specification are correct and
+          cover a sufficient range of scenarios - ultimately making the
+          underlying data models easier to implement and use.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1213,29 +1219,29 @@ svg {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Although the YANG data modeling language has been in use for over a
-          decade, there remains a lack of tooling to help YANG model authors
+          decade, there remains a lack of tooling to help YANG module authors
           analyze and validate their YANG modules and example instances. People
           defining or evaluating YANG modules have limited guidance on how to
           include, extract, test, and evaluate the impact of example data for those modules.
-          Example data instances are vital to illustrate how a model is
+          Example data instances are vital to illustrate how a module is
           intended to be used. <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> provides guidelines for authors and
           reviewers of documents containing YANG data models, including
           recommendations for usage examples and validation of valid data instances.
-           The YANG data modeling language itself is specified in <span>[<a href="#RFC7950" class="cite xref">RFC7950</a>]</span>
+           The YANG data modeling language itself is specified in <span>[<a href="#RFC7950" class="cite xref">RFC7950</a>]</span>.
            However, gaps still exist in defining conventions and tools that can
           automatically extract examples, validate them, and give authors
-          feedback on what they might be missing in their models.<a href="#section-1-1" class="pilcrow">¶</a></p>
+          feedback on what they might be missing in their modules.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">
          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
          NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
          "MAY", and "OPTIONAL" in this document are to be interpreted as
         described in <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span>
          when, and only when, they appear in all capitals, as shown here.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The objective of this document is to define guidelines that enable the development of tools which, given one or more IETF documents (RFCs or drafts), can extract YANG model examples, validate that they are correct, and analyze whether they sufficiently cover the model. To achieve this, we address two main aspects:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">The objective of this document is to define guidelines that enable the development of tools which, given one or more IETF documents (RFCs or drafts), can extract YANG module examples, validate that they are correct, and analyze whether they sufficiently cover the module. To achieve this, we address two main aspects:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-4.1">Guidelines for Including YANG Examples in RFCs: A clear method for authors to include example data instances of YANG models in IETF documents in a way that tools can automatically extract and validate them. In addition, we outline how tools can perform this extraction and validation, and we propose a method to include extra YANG modules (when necessary) for validating more complex examples without affecting the main normative content.<a href="#section-1-4.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-4.1">Guidelines for Including YANG Examples in RFCs: A clear method for authors to include example data instances of YANG modules in IETF documents in a way that tools can automatically extract and validate them. In addition, we outline how tools can perform this extraction and validation, and we propose a method to include extra YANG modules (when necessary) for validating more complex examples without affecting the main normative content.<a href="#section-1-4.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-4.2">Definition of YANG Module "Coverage": A new concept to measure how much of a YANG module's data nodes are exercised by the example instances in a document. By analyzing the examples, a tool can inform authors which parts of their YANG model are covered and which are still missing from the examples. A proof-of-concept implementation for computing such coverage is also considered.<a href="#section-1-4.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-4.2">Definition of YANG Module "Coverage": A new concept to measure how much of a YANG module's data nodes are exercised by the example instances in a document. By analyzing the examples, a tool can inform authors which parts of their YANG module are covered and which are still missing from the examples. A proof-of-concept implementation for computing such coverage is also considered.<a href="#section-1-4.2" class="pilcrow">¶</a>
 </li>
       </ul>
 <p id="section-1-5">Scope: The proposals in this document focus on typical use cases. It is expected that proof-of-concept tools will confirm the viability of these methods for moderately complex examples as this document progresses. If such automatic validation proves infeasible in practice, the approach may need adjustment. Extremely complex example scenarios (e.g., those involving schema mount or highly dynamic state) are outside the current scope and could be addressed in future work.<a href="#section-1-5" class="pilcrow">¶</a></p>
@@ -1290,8 +1296,8 @@ svg {
         <h3 id="name-including-auxiliary-yang-mo">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-including-auxiliary-yang-mo" class="section-name selfRef">Including Auxiliary YANG Modules for Examples</a>
         </h3>
-<p id="section-2.2-1">Sometimes an example instance cannot be validated or understood without additional YANG definitions that are not part of the main module in the document. A common case is the use of YANG deviations or vendor-specific augmentations to adapt a base model. In principle, deviations are meant to be extraordinary measures (and their use is discouraged in final standards), but in practice they are sometimes used in industry deployments.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2">To illustrate how a deviation or augmentation affects the data, an RFC might need to include a small auxiliary YANG module (for example, a module that contains deviation statements targeting the base model) purely for use in the example validation. The challenge is to do this without confusing readers or tools and without "contaminating" the main normative content of the document. We propose the following guidelines for including such auxiliary YANG modules in examples:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">Sometimes an example instance cannot be validated or understood without additional YANG definitions that are not part of the main module in the document. A common case is the use of YANG deviations or vendor-specific augmentations to adapt a base module. In principle, deviations are meant to be extraordinary measures (and their use is discouraged in final standards), but in practice they are sometimes used in industry deployments.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">To illustrate how a deviation or augmentation affects the data, an RFC might need to include a small auxiliary YANG module (for example, a module that contains deviation statements targeting the base module) purely for use in the example validation. The challenge is to do this without confusing readers or tools and without "contaminating" the main normative content of the document. We propose the following guidelines for including such auxiliary YANG modules in examples:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-3.1">Keep Auxiliary Modules Separate: Include the auxiliary module in a way that makes it clear that it is not a normative YANG module from the document. This can be done with a dedicated directory (e.g. the file name starts with `auxiliary_modules/`), or a local meaninful extension. Any example that requires this auxiliary module would need to reference reference it by its full path when running the validation tool.<a href="#section-2.2-3.1" class="pilcrow">¶</a>
 </li>
@@ -1307,40 +1313,71 @@ svg {
       <h2 id="name-yang-module-coverage-by-exa">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-yang-module-coverage-by-exa" class="section-name selfRef">YANG Module Coverage by Examples</a>
       </h2>
-<p id="section-3-1">Providing examples in YANG model documents is not just helpful for readers, but can also improve the quality of the model itself. We introduce the concept of YANG module coverage as a way to measure how thoroughly the provided examples exercise the data model.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">Providing examples in YANG module documents is not just helpful for readers, but can also improve the quality of the module itself. We introduce the concept of YANG module coverage as a way to measure how thoroughly the provided examples exercise the data model.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">By analogy to code coverage in software testing (which checks what fraction of code is executed by tests), YANG module coverage looks at what fraction of a module's data nodes are present in at least one of the example instances. For the baseline metric, coverage is defined over terminal data nodes, that is, leaf and leaf-list nodes from the YANG module that have a value in one or more example instances. A simple quantitative metric could be the percentage of the module's leaf and leaf-list nodes that appear in at least one example.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">For instance, if a YANG module defines 100 configurable or state leaf nodes, and the examples collectively include 45 of those leaves, one could say the example coverage is 45%. This number, while not telling the whole story, gives an indication of how much of the model's functionality is demonstrated by the examples. Low coverage might suggest that important parts of the model are never shown in any example. This could mean those parts are either less relevant or simply that the document might benefit from additional examples to cover them.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">Probably more helpful than the coverage percentage, we can also define an "uncovered-node tree" - essentially a view of the data model highlighting the nodes that were not covered by any example. This is perhaps the most direct way of showing the authors which portions of their model remain unused in the examples. For example, a tool could output a tree or list of all leaf and leaf-list nodes not present in any example instance, indicating potential gaps in example coverage.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">This kind of feedback can help authors identify gaps and improve their documents. If a particular feature or branch of the model has no example, the authors might choose to add one for completeness or clarity. In some cases, it might reveal that certain parts of the model are hard to exemplify or not yet implemented, which could prompt re-thinking that part of the design or at least adding an explanation for why it's not covered by any example.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-3">For instance, if a YANG module defines 100 configurable or state leaf nodes, and the examples collectively include 45 of those leaves, one could say the example coverage is 45%. This number, while not telling the whole story, gives an indication of how much of the module's functionality is demonstrated by the examples. Low coverage might suggest that important parts of the module are never shown in any example. This could mean those parts are either less relevant or simply that the document might benefit from additional examples to cover them.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Probably more helpful than the coverage percentage, we can also define an "uncovered-node tree" - essentially a view of the data model highlighting the nodes that were not covered by any example. This is perhaps the most direct way of showing the authors which portions of their module remain unused in the examples. For example, a tool could output a tree or list of all leaf and leaf-list nodes not present in any example instance, indicating potential gaps in example coverage.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">This kind of feedback can help authors identify gaps and improve their documents. If a particular feature or branch of the module has no example, the authors might choose to add one for completeness or clarity. In some cases, it might reveal that certain parts of the module are hard to exemplify or not yet implemented, which could prompt re-thinking that part of the design or at least adding an explanation for why it's not covered by any example.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <p id="section-3-6">Coverage works directly on the data nodes from the YANG module. It should be as simple as possible, therefore, we will consider that any data leaf or leaf-list under a list is covered if there is at least an example with an instance of the list that includes it. That is, for a list with 2 different leaves, one leaf covered under one key and another under another one will still yield a 100% coverage of the list leaves.<a href="#section-3-6" class="pilcrow">¶</a></p>
 <section id="section-3.1">
         <h3 id="name-coverage-example">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-coverage-example" class="section-name selfRef">Coverage Example</a>
         </h3>
 <p id="section-3.1-1">Consider this simple YANG module:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<figure id="figure-1">
-          <div class="alignLeft art-text artwork" id="section-3.1-2.1">
-<pre>
+<div class="lang-yang sourcecode" id="section-3.1-2">
+<pre>&lt;CODE BEGINS&gt; file "example-device@2026-06-25.yang"
+
 module example-device {
+  yang-version 1.1;
   namespace "http://example.com/device";
   prefix "dev";
 
+  description
+    "This is a non-normative example module, provided only to
+     illustrate coverage analysis in this document.";
+
+  revision 2026-06-25 {
+    description "Initial example revision.";
+  }
+
   container device {
-    leaf hostname { type string; }
-    leaf location { type string; }
-    leaf admin-state { type boolean; }
+    description "Top-level device configuration.";
+
+    leaf hostname {
+      type string;
+      description "The device hostname.";
+    }
+    leaf location {
+      type string;
+      description "Physical location of the device.";
+    }
+    leaf admin-state {
+      type boolean;
+      description "Administrative state of the device.";
+    }
 
     list interface {
       key "name";
-      leaf name { type string; }
-      leaf enabled { type boolean; }
-      leaf other { type boolean; }
+      description "List of device interfaces.";
+
+      leaf name {
+        type string;
+        description "Interface name; the list key.";
+      }
+      leaf enabled {
+        type boolean;
+        description "Whether the interface is enabled.";
+      }
+      leaf other {
+        type boolean;
+        description "An additional example leaf.";
+      }
     }
   }
 }
-</pre>
+
+&lt;CODE ENDS&gt;</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a></figcaption></figure>
 <p id="section-3.1-3">And this example instance:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-3.1-4">
 <pre>&lt;CODE BEGINS&gt; file "yang/examples/valid-device-config.xml"
@@ -1356,12 +1393,17 @@ module example-device {
 &lt;CODE ENDS&gt;</pre><a href="#section-3.1-4" class="pilcrow">¶</a>
 </div>
 <p id="section-3.1-5">Coverage analysis shows:<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">- Total terminal data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.1-7">- Covered nodes: 3 (hostname, interface/name, interface/enabled)<a href="#section-3.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.1-8">- Coverage percentage: 50%<a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">Uncovered-node tree (missing nodes):<a href="#section-3.1-9" class="pilcrow">¶</a></p>
-<figure id="figure-2">
-          <div class="alignLeft art-text artwork" id="section-3.1-10.1">
+<ul class="normal">
+<li class="normal" id="section-3.1-6.1">Total terminal data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)<a href="#section-3.1-6.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.1-6.2">Covered nodes: 3 (hostname, interface/name, interface/enabled)<a href="#section-3.1-6.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.1-6.3">Coverage percentage: 50%<a href="#section-3.1-6.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-3.1-7">Uncovered-node tree (missing nodes):<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+<figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-3.1-8.1">
 <pre>
 device
 - location
@@ -1370,16 +1412,16 @@ device
   - other
 </pre>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a></figcaption></figure>
-<p id="section-3.1-11">This analysis helps authors identify that the 'location' and 'admin-state' leaves need examples.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a></figcaption></figure>
+<p id="section-3.1-9">This analysis helps authors identify that the 'location' and 'admin-state' leaves need examples.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
 </section>
 <section id="section-3.2">
         <h3 id="name-coverage-across-multiple-do">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-coverage-across-multiple-do" class="section-name selfRef">Coverage Across Multiple Documents</a>
         </h3>
-<p id="section-3.2-1">It is common that a YANG module defined in one document might be used, extended, or exemplified in another document. Examples could be spread across multiple RFCs or drafts (for instance, a base YANG module in an RFC and a usage guide in a separate draft that provides additional examples). While our primary focus is on coverage within a single document's scope (i.e. how well the examples in this document cover this document's module), one could imagine tooling that aggregates examples from multiple sources for a more holistic coverage analysis. For example, if module A is defined in RFC X, and RFC Y (perhaps a companion or a applicability statement) provides additional examples for module A, a combined coverage analysis across X and Y would give a better picture of how module A is covered in total. We will strive to define approaches that enable tooling to do this kind of multi-document coverage assessment automatically in the future.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">It is common that a YANG module defined in one document might be used, extended, or exemplified in another document. Examples could be spread across multiple RFCs or drafts (for instance, a base YANG module in an RFC and a usage guide in a separate draft that provides additional examples). While our primary focus is on coverage within a single document's scope (i.e. how well the examples in this document cover this document's module), one could imagine tooling that aggregates examples from multiple sources for a more holistic coverage analysis. For example, if module A is defined in RFC X, and RFC Y (perhaps a companion or an applicability statement) provides additional examples for module A, a combined coverage analysis across X and Y would give a better picture of how module A is covered in total. We will strive to define approaches that enable tooling to do this kind of multi-document coverage assessment automatically in the future.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">For the concept of YANG packages <span>[<a href="#I-D.ietf-netmod-yang-packages" class="cite xref">I-D.ietf-netmod-yang-packages</a>]</span>, the coverage across the entire package might be of interest.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3"> For the to-be-created ONSEN Working Group, the coverage across (service) abstractions might be of interest.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-3"> For the newly created ONSEN Working Group, the coverage across (service) abstractions might be of interest.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </section>
 <section id="section-4">
@@ -1390,7 +1432,7 @@ device
 <ul class="normal">
 <li class="normal" id="section-4-2.1">Union member types: If a covered leaf is of type union, a future version can define how to report which union member types were exercised by the example instances. The leaf itself may already be covered, while only some of its possible member types were used. Reporting this properly requires an uncovered tree format beyond the YANG tree definition from <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#section-4-2.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-4-2.2">Enumeration values: If a covered leaf is of type enumeration, a future version can define whether tools should report which enumeration values were exercised by the example instances. Similar to the case of Union member types, we will need to expand the defintion of YANG tree from <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span> to show this values.<a href="#section-4-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-4-2.2">Enumeration values: If a covered leaf is of type enumeration, a future version can define whether tools should report which enumeration values were exercised by the example instances. Similar to the case of Union member types, we will need to expand the definition of YANG tree from <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span> to show these values.<a href="#section-4-2.2" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-4-2.3">Presence containers: A future version can define whether instantiating a presence container counts as coverage independently from the leaves below it. This is a separate question from the baseline leaf and leaf-list metric because a presence container can carry meaning by existing.<a href="#section-4-2.3" class="pilcrow">¶</a>
 </li>
@@ -1413,7 +1455,7 @@ device
       <h2 id="name-conclusion">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-conclusion" class="section-name selfRef">Conclusion</a>
       </h2>
-<p id="section-6-1">By standardizing how YANG examples are included and validated, we make it easier for implementers and reviewers to trust that the examples in a specification are correct and that a sufficient range of scenarios is covered. The concept of YANG module coverage, while exploratory, can further encourage authors to include more comprehensive examples and help pinpoint which parts of a data model might need additional illustration. Together, these measures aim to improve the overall quality and usability of YANG models in IETF documents.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">By standardizing how YANG examples are included and validated, we make it easier for implementers and reviewers to trust that the examples in a specification are correct and that a sufficient range of scenarios is covered. The concept of YANG module coverage, while exploratory, can further encourage authors to include more comprehensive examples and help pinpoint which parts of a data model might need additional illustration. Together, these measures aim to improve the overall quality and usability of YANG modules in IETF documents.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">Ultimately, the success of these proposals will depend on tool support. As a next step, developing proof-of-concept tools or integrations (for example, enhancements to existing YANG validators like yanglint, or new scripts to extract and analyze examples) will be crucial. If moderately complex examples can be automatically extracted, validated, and measured for coverage with such tools, it will validate the approach. On the other hand, if significant obstacles arise during implementation, the recommendations in this document may need to be refined. Our hope is that these initial guidelines spark discussion and experimentation, leading to more robust support for YANG examples and better validation practices in the near future.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 <div id="IANA">
@@ -1435,33 +1477,35 @@ device
 <section id="section-9">
       <h2 id="name-normative-references">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-    </h2>
+      </h2>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+      <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7950">[RFC7950]</dt>
+      <dd>
+<span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"The YANG 1.1 Data Modeling Language"</span>, <span class="seriesInfo">RFC 7950</span>, <span class="seriesInfo">DOI 10.17487/RFC7950</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7950">https://www.rfc-editor.org/info/rfc7950</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+      <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9195">[RFC9195]</dt>
+      <dd>
+<span class="refAuthor">Lengyel, B.</span> and <span class="refAuthor">B. Claise</span>, <span class="refTitle">"A File Format for YANG Instance Data"</span>, <span class="seriesInfo">RFC 9195</span>, <span class="seriesInfo">DOI 10.17487/RFC9195</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9195">https://www.rfc-editor.org/info/rfc9195</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9907">[RFC9907]</dt>
+    <dd>
+<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Boucadair, M., Ed.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Guidelines for Authors and Reviewers of Documents Containing YANG Data Models"</span>, <span class="seriesInfo">BCP 216</span>, <span class="seriesInfo">RFC 9907</span>, <span class="seriesInfo">DOI 10.17487/RFC9907</span>, <time datetime="2026-03" class="refDate">March 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9907">https://www.rfc-editor.org/info/rfc9907</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
 </section>
 <section id="section-10">
       <h2 id="name-informative-references">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
-<dt id="RFC9907">[RFC9907]</dt>
-      <dd>
-<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Boucadair, M., Ed.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Guidelines for Authors and Reviewers of Documents Containing YANG Data Models"</span>, <span class="seriesInfo">BCP 216</span>, <span class="seriesInfo">RFC 9907</span>, <span class="seriesInfo">DOI 10.17487/RFC9907</span>, <time datetime="2026-03" class="refDate">March 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9907">https://www.rfc-editor.org/info/rfc9907</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC2119">[RFC2119]</dt>
-      <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
-      <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC7950">[RFC7950]</dt>
-      <dd>
-<span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"The YANG 1.1 Data Modeling Language"</span>, <span class="seriesInfo">RFC 7950</span>, <span class="seriesInfo">DOI 10.17487/RFC7950</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7950">https://www.rfc-editor.org/info/rfc7950</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9195">[RFC9195]</dt>
-      <dd>
-<span class="refAuthor">Lengyel, B.</span> and <span class="refAuthor">B. Claise</span>, <span class="refTitle">"A File Format for YANG Instance Data"</span>, <span class="seriesInfo">RFC 9195</span>, <span class="seriesInfo">DOI 10.17487/RFC9195</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9195">https://www.rfc-editor.org/info/rfc9195</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8340">[RFC8340]</dt>
       <dd>
 <span class="refAuthor">Bjorklund, M.</span> and <span class="refAuthor">L. Berger, Ed.</span>, <span class="refTitle">"YANG Tree Diagrams"</span>, <span class="seriesInfo">BCP 215</span>, <span class="seriesInfo">RFC 8340</span>, <span class="seriesInfo">DOI 10.17487/RFC8340</span>, <time datetime="2018-03" class="refDate">March 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8340">https://www.rfc-editor.org/info/rfc8340</a>&gt;</span>. </dd>
@@ -1516,7 +1560,7 @@ device
 </address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Benoit Claise</span></div>
-<div dir="auto" class="left"><span class="org">Everything OPS</span></div>
+<div dir="auto" class="left"><span class="org">Everything OPS &amp; Arrcus</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:benoit@everything-ops.net" class="email">benoit@everything-ops.net</a>
