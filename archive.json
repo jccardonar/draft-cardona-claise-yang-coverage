@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-05T01:57:13.218990+00:00",
+  "timestamp": "2026-07-07T01:59:16.839656+00:00",
   "repo": "jccardonar/draft-cardona-claise-yang-coverage",
   "labels": [
     {
@@ -50,5 +50,60 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOTFWk3M7ucCgf",
+      "title": "Benoit review",
+      "url": "https://github.com/jccardonar/draft-cardona-claise-yang-coverage/pull/1",
+      "state": "CLOSED",
+      "author": "bclaise",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T16:14:26Z",
+      "updatedAt": "2026-07-06T16:26:51Z",
+      "baseRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "baseRefName": "main",
+      "baseRefOid": "5ea5cdbf64198795bafb24376d7ba6f648b527fb",
+      "headRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "headRefName": "Benoit's-review",
+      "headRefOid": "761d0ca423fcdcdac1accfd832fa7d3ed0f4665f",
+      "closedAt": "2026-07-06T16:26:51Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOTFWk3M7ucaFP",
+      "title": "Benoit review second attempt",
+      "url": "https://github.com/jccardonar/draft-cardona-claise-yang-coverage/pull/2",
+      "state": "MERGED",
+      "author": "bclaise",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T16:28:56Z",
+      "updatedAt": "2026-07-06T18:00:20Z",
+      "baseRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "baseRefName": "main",
+      "baseRefOid": "58d51d5b1d7d27f33ebd766522cbf9899f2e086b",
+      "headRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "headRefName": "Benoit-review",
+      "headRefOid": "761d0ca423fcdcdac1accfd832fa7d3ed0f4665f",
+      "closedAt": "2026-07-06T18:00:20Z",
+      "mergedAt": "2026-07-06T18:00:20Z",
+      "mergedBy": "jccardonar",
+      "mergeCommit": {
+        "oid": "1a1bce3a4b1a29eb7cc4f8fe4b31735f927b4b31"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
