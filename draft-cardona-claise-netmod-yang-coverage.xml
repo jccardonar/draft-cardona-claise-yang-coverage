@@ -144,7 +144,7 @@ device
     </section>
     <section anchor="Security">
       <name>Security Considerations</name>
-      <t>This document currently does not contain any security consideration.</t>
+      <t>This document has no security considerations.</t>
     </section>
   </middle>
   <back>
