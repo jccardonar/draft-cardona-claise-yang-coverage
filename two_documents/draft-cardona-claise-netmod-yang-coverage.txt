@@ -1,0 +1,448 @@
+
+
+
+
+Network Modeling                                              C. Cardona
+Internet-Draft                                                       NTT
+Intended status: Experimental                                  B. Claise
+Expires: 3 May 2027                              Everything OPS & Arrcus
+                                                         30 October 2026
+
+
+           YANG Module Coverage by Examples in IETF Documents
+            draft-cardona-claise-netmod-yang-coverage-latest
+
+Abstract
+
+   This document introduces the concept of YANG module "coverage" to
+   measure how thoroughly example instances exercise a YANG module's
+   data nodes.  Coverage analysis identifies the parts of a module that
+   are and are not exercised by examples, helping authors, reviewers,
+   and implementers understand the range of scenarios illustrated by a
+   specification.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 3 May 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 1]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  YANG Module Coverage by Examples  . . . . . . . . . . . . . .   2
+     2.1.  Coverage Example  . . . . . . . . . . . . . . . . . . . .   3
+     2.2.  Coverage Across Multiple Documents  . . . . . . . . . . .   5
+   3.  Open Issues and Future Work . . . . . . . . . . . . . . . . .   5
+   4.  Implementation  . . . . . . . . . . . . . . . . . . . . . . .   6
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
+   8.  Informative References  . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+
+1.  Introduction
+
+   Although the YANG data modeling language has been in use for over a
+   decade, tools can help YANG module authors analyze the example
+   instances that illustrate their modules.  Example data instances are
+   vital to illustrate how a module is intended to be used.  [RFC9907]
+   provides guidelines for authors and reviewers of documents containing
+   YANG data models, including recommendations for usage examples and
+   validation of valid data instances.  The YANG data modeling language
+   itself is specified in [RFC7950].
+
+   The objective of this document is to define YANG module coverage: a
+   measure of which parts of a YANG module are exercised by example
+   instances.  This document operates on example instances that have
+   already been selected and validated; it is independent of how those
+   examples were discovered.  Conventions for identifying and validating
+   examples are specified in the companion document
+   [I-D.CAR-CY-YANG-EXAMPLES].
+
+2.  YANG Module Coverage by Examples
+
+   Providing examples in YANG module documents is not just helpful for
+   readers, but can also improve the quality of the module itself.  We
+   introduce the concept of YANG module coverage as a way to measure how
+   thoroughly the provided examples exercise the data model.
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 2]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   By analogy to code coverage in software testing (which checks what
+   fraction of code is executed by tests), YANG module coverage looks at
+   what fraction of a module's data nodes are present in at least one of
+   the example instances.  For the baseline metric, coverage is defined
+   over terminal data nodes, that is, leaf and leaf-list nodes from the
+   YANG module that have a value in one or more example instances.  A
+   simple quantitative metric could be the percentage of the module's
+   leaf and leaf-list nodes that appear in at least one example.
+
+   For instance, if a YANG module defines 100 configurable or state leaf
+   nodes, and the examples collectively include 45 of those leaves, one
+   could say the example coverage is 45%. This number, while not telling
+   the whole story, gives an indication of how much of the module's
+   functionality is demonstrated by the examples.  Low coverage might
+   suggest that important parts of the module are never shown in any
+   example.  This could mean those parts are either less relevant or
+   simply that the document might benefit from additional examples to
+   cover them.
+
+   Probably more helpful than the coverage percentage, we can also
+   define an "uncovered-node tree" - essentially a view of the data
+   model highlighting the nodes that were not covered by any example.
+   This is perhaps the most direct way of showing the authors which
+   portions of their module remain unused in the examples.  For example,
+   a tool could output a tree or list of all leaf and leaf-list nodes
+   not present in any example instance, indicating potential gaps in
+   example coverage.
+
+   This kind of feedback can help authors identify gaps and improve
+   their documents.  If a particular feature or branch of the module has
+   no example, the authors might choose to add one for completeness or
+   clarity.  In some cases, it might reveal that certain parts of the
+   module are hard to exemplify or not yet implemented, which could
+   prompt re-thinking that part of the design or at least adding an
+   explanation for why it's not covered by any example.
+
+   Coverage works directly on the data nodes from the YANG module.  It
+   should be as simple as possible, therefore, we will consider that any
+   data leaf or leaf-list under a list is covered if there is at least
+   an example with an instance of the list that includes it.  That is,
+   for a list with 2 different leaves, one leaf covered under one key
+   and another under another one will still yield a 100% coverage of the
+   list leaves.
+
+2.1.  Coverage Example
+
+   Consider this simple YANG module:
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 3]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   module example-device {
+     yang-version 1.1;
+     namespace "http://example.com/device";
+     prefix "dev";
+     description
+       "This is a non-normative example module, provided only to
+        illustrate coverage analysis in this document.";
+     revision 2026-06-25 { description "Initial example revision."; }
+     container device {
+       description "Top-level device configuration.";
+       leaf hostname { type string; description "The device hostname."; }
+       leaf location { type string; description "Physical location of the device."; }
+       leaf admin-state { type boolean; description "Administrative state of the device."; }
+       list interface {
+         key "name";
+         description "List of device interfaces.";
+         leaf name { type string; description "Interface name; the list key."; }
+         leaf enabled { type boolean; description "Whether the interface is enabled."; }
+         leaf other { type boolean; description "An additional example leaf."; }
+       }
+     }
+   }
+
+   And this example instance:
+
+   <CODE BEGINS> file "yang/examples/valid-device-config.xml"
+   <device xmlns="http://example.com/device">
+     <hostname>router1</hostname>
+     <interface>
+       <name>eth0</name>
+       <enabled>true</enabled>
+     </interface>
+   </device>
+   <CODE ENDS>
+
+   Coverage analysis shows:
+
+   *  Total terminal data nodes: 6 (hostname, location, admin-state,
+      interface/name, interface/enabled, interface/other)
+
+   *  Covered nodes: 3 (hostname, interface/name, interface/enabled)
+
+   *  Coverage percentage: 50%
+
+   Uncovered-node tree (missing nodes):
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 4]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   device
+   - location
+   - admin-state
+   - interface
+     - other
+
+                                  Figure 1
+
+   This analysis helps authors identify that the 'location', 'admin-
+   state', and 'interface/other' leaves need examples.
+
+2.2.  Coverage Across Multiple Documents
+
+   It is common that a YANG module defined in one document might be
+   used, extended, or exemplified in another document.  Examples could
+   be spread across multiple RFCs or drafts (for instance, a base YANG
+   module in an RFC and a usage guide in a separate draft that provides
+   additional examples).  While our primary focus is on coverage within
+   a single document's scope (i.e. how well the examples in this
+   document cover this document's module), one could imagine tooling
+   that aggregates examples from multiple sources for a more holistic
+   coverage analysis.  For example, if module A is defined in RFC X, and
+   RFC Y (perhaps a companion or an applicability statement) provides
+   additional examples for module A, a combined coverage analysis across
+   X and Y would give a better picture of how module A is covered in
+   total.  We will strive to define approaches that enable tooling to do
+   this kind of multi-document coverage assessment automatically in the
+   future.
+
+   For the concept of YANG packages [I-D.ietf-netmod-yang-packages], the
+   coverage across the entire package might be of interest.
+
+3.  Open Issues and Future Work
+
+   The baseline metric in this document is intentionally limited to leaf
+   and leaf-list coverage.  Feedback received on version -00 identified
+   additional useful information that is not naturally represented by
+   the baseline uncovered-node tree.
+
+   *  Union member types: If a covered leaf is of type union, a future
+      version can define how to report which union member types were
+      exercised by the example instances.  The leaf itself may already
+      be covered, while only some of its possible member types were
+      used.  Reporting this properly requires an uncovered tree format
+      beyond the YANG tree definition from [RFC8340].
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 5]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   *  Enumeration values: If a covered leaf is of type enumeration, a
+      future version can define whether tools should report which
+      enumeration values were exercised by the example instances.
+      Similar to the case of Union member types, we will need to expand
+      the definition of YANG tree from [RFC8340] to show these values.
+
+   *  Presence containers: A future version can define whether
+      instantiating a presence container counts as coverage
+      independently from the leaves below it.  This is a separate
+      question from the baseline leaf and leaf-list metric because a
+      presence container can carry meaning by existing.
+
+   *  Groupings: The proof-of-concept implementation already handles the
+      schema nodes created by uses of a grouping.  Further work is
+      needed to decide whether grouping-specific metrics are useful, and
+      how they should be reported without confusing abstract grouping
+      definitions with instantiated schema nodes.
+
+   *  Modules without data nodes: A future version can define clearer
+      reporting for modules that primarily contain groupings, typedefs,
+      identities, extensions, RPCs, actions, or notifications, where the
+      baseline data-node coverage metric may not apply.
+
+4.  Implementation
+
+   A proof-of-concept implementation has been developed in the yangson-
+   coverage repository [YANGSON-COVERAGE].  The implementation uses
+   Yangson [YANGSON] as a library for loading YANG modules and
+   validating instance data, and then implements the coverage logic
+   described in this document.
+
+   Yangson already exposes validation counters for schema nodes and can
+   print a complete schema tree annotated with those counters.  This is
+   useful input, but it is not the report format defined here.  The
+   proof of concept tracks covered leaves across validated examples and
+   generates the uncovered-node tree described in this document: covered
+   terminal nodes are removed, and parent nodes are kept only as
+   context.
+
+   The proof of concept also provides a command-line interface to reset
+   coverage state, validate examples while accumulating coverage, and
+   print the uncovered-node report.  It includes initial support for
+   grouping-level reporting, while the exact grouping metrics remain
+   future work.
+
+   Other related tooling includes yanglint [YANGLINT], example
+   validation scripts such as yang-validation [YANG-VALIDATION], the
+   "Internet-Draft with YANG Modules" template [I-D-WITH-YANG-TEMPLATE],
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 6]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   and the associated I-D-with-yang-tools repository
+   [I-D-WITH-YANG-TOOLS].  These tools and templates support validation
+   of YANG modules, tree generation, and validation of examples.
+
+5.  IANA Considerations
+
+   This document has no IANA actions.
+
+6.  Security Considerations
+
+   This document has no security considerations.
+
+7.  Normative References
+
+   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
+              RFC 7950, DOI 10.17487/RFC7950, August 2016,
+              <https://www.rfc-editor.org/info/rfc7950>.
+
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
+
+8.  Informative References
+
+   [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
+              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
+              <https://www.rfc-editor.org/info/rfc8340>.
+
+   [I-D.CAR-CY-YANG-EXAMPLES]
+              Cardona, C. and B. Claise, "Guidelines for YANG Example
+              and Supporting Artifacts in IETF Documents", Work in
+              Progress, Internet-Draft, draft-cardona-claise-netmod-
+              yang-examples, <https://datatracker.ietf.org/doc/draft-
+              cardona-claise-netmod-yang-examples/>.
+
+   [YANGSON]  CZ.NIC, "Yangson Documentation",
+              <https://yangson.labs.nic.cz/>.
+
+   [YANGLINT] CESNET, "libyang and yanglint Repository",
+              <https://github.com/CESNET/libyang>.
+
+   [I-D.ietf-netmod-yang-packages]
+              Wilton, R., Rahman, R., Clarke, J., and J. Sterne, "YANG
+              Packages", Work in Progress, Internet-Draft, draft-ietf-
+              netmod-yang-packages-10, 20 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
+              yang-packages-10>.
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 7]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
+   [I-D-WITH-YANG-TEMPLATE]
+              IETF OPS AD, ""Internet-Draft with YANG Modules" Template
+              Repository",
+              <https://github.com/IETF-OPS-AD/I-D-with-yang-template>.
+
+   [I-D-WITH-YANG-TOOLS]
+              IETF OPS AD, "I-D-with-yang-tools Repository",
+              <https://github.com/IETF-OPS-AD/I-D-with-yang-tools>.
+
+   [YANG-VALIDATION]
+              Linutronix, "yang-validation Repository",
+              <https://github.com/Linutronix/yang-validation>.
+
+   [YANGSON-COVERAGE]
+              Camilo Cardona-Benoit Claise, "yang-coverage proof-of-
+              concept Repository",
+              <https://github.com/jccardonar/yangson-coverage/>.
+
+Authors' Addresses
+
+   Camilo Cardona
+   NTT
+   164-168, Carrer de Numancia
+   08029 Barcelona Catalonia
+   Spain
+   Email: camilo@gin.ntt.net
+
+
+   Benoit Claise
+   Everything OPS & Arrcus
+   Email: benoit@everything-ops.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 8]

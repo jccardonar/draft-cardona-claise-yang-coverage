@@ -1,0 +1,448 @@
+
+
+
+
+Network Modeling                                              C. Cardona
+Internet-Draft                                                       NTT
+Updates: 9907 (if approved)                                    B. Claise
+Intended status: Best Current Practice           Everything OPS & Arrcus
+Expires: 3 May 2027                                      30 October 2026
+
+
+ Guidelines for YANG Example and Supporting Artifacts in IETF Documents
+            draft-cardona-claise-netmod-yang-examples-latest
+
+Abstract
+
+   This document updates RFC 9907 guidance for including YANG related
+   examples and supporting artifacts in IETF documents.  It defines
+   conventions that make those artifacts easier for tools to identify,
+   extract, organize, and validate.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 3 May 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 1]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Including YANG Example Instances in IETF Documents  . . . . .   2
+     2.1.  Types of Example Validation . . . . . . . . . . . . . . .   4
+       2.1.1.  Simple Validation Examples  . . . . . . . . . . . . .   4
+       2.1.2.  Complex Examples with External References . . . . . .   4
+     2.2.  Including Auxiliary YANG Modules for Examples . . . . . .   5
+   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   5.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   6.  Informative References  . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+
+1.  Introduction
+
+   Although the YANG data modeling language has been in use for over a
+   decade, people defining or evaluating YANG modules have limited
+   guidance on how to include, extract, and test example data for those
+   modules.  Example data instances are vital to illustrate how a module
+   is intended to be used.  [RFC9907] provides guidelines for authors
+   and reviewers of documents containing YANG data models, including
+   some recommendations for usage examples and validation of valid data
+   instances, but it still lacks an exact methodology that tools could
+   use to work with them.
+
+   This document updates the usage-example guidance in Section 3.12 of
+   [RFC9907] by defining conventions that allow tools to identify,
+   extract, organize, and validate YANG-related example and supporting
+   artifacts.  This document does not replace the example and validation
+   guidance in [RFC9907].
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   [RFC2119] [RFC8174] when, and only when, they appear in all capitals,
+   as shown here.
+
+2.  Including YANG Example Instances in IETF Documents
+
+   When authors include example YANG instances in an RFC or Internet-
+   Draft, example instances intended for automatic extraction and
+   validation MUST use the conventions in this section.  Other example
+   instances MAY use different conventions.
+
+   For XML or JSON instance examples intended for automatic extraction
+   and validation, authors MUST use an RFCXML sourcecode element with a
+   name attribute and code markers so that rendered documents remain
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 2]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   easy to extract.  The name attribute is defined by [RFC7991] as a
+   filename suitable for the contents, including extraction to a local
+   file.  This document uses that value as the logical name of the
+   artifact, which defines path-like conventions within that name
+   (similar, but not equal, to a file system).
+
+   Example instances intended to be valid and automatically processed
+   MUST use the logical artifact names yang/examples/valid-<name>.xml
+   for XML instances and yang/examples/valid-<name>.json for JSON
+   instances.  Each name SHOULD be unique within a document (and ideally
+   unique across related documents being analyzed together).  For an
+   [RFC9195] instance data set, the portion following valid- SHOULD
+   follow the filename conventions in [RFC9195].  The valid- prefix is
+   added by this document to identify an instance intended for automatic
+   validation.
+
+   The hierarchical filename is primarily a logical artifact name and
+   classification.  During draft development, an accompanying Git
+   repository or other external artifact collection MAY mirror the same
+   logical layout.  Where practical, an external repository SHOULD
+   mirror the logical hierarchy.  This document does not define the
+   structure of such repositories.
+
+   For example, an XML instance might be included as:
+
+   <CODE BEGINS> file "yang/examples/valid-interface-config.xml"
+   <?xml version="1.0" encoding="UTF-8"?>
+   <data> ... </data>
+   <CODE ENDS>
+
+   And a JSON instance as:
+
+   <CODE BEGINS> file "yang/examples/valid-interface-config.json"
+   {
+     "interface": { ... }
+   }
+   <CODE ENDS>
+
+   By following this approach, a tool can scan the RFCXML source or the
+   rendered document for code blocks whose logical names are under yang/
+   examples/, start with valid-, and end in .xml or .json, extract their
+   contents, and validate them against the appropriate YANG modules.
+
+   In cases where an included code snippet is not meant to represent a
+   valid YANG instance (for instance, it might be pseudocode, a partial
+   fragment, or intentionally invalid to illustrate an error), the
+   author can indicate this so that automated validators skip it.  For
+   example, an author might not place the snippet under yang/examples/,
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 3]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   or might not use the valid- prefix.  An author could also include an
+   explicit note in the text indicating that a given snippet is not for
+   validation.  Using these conventions strikes a balance between making
+   examples extractable and allowing flexibility for authors to include
+   non-valid illustrative snippets when necessary.
+
+2.1.  Types of Example Validation
+
+   Not all example instances are the same in terms of validation.  Many
+   YANG examples in documentation are simple and only involve the module
+   defined in the document, but in more complex scenarios an example
+   might span multiple modules or need knowledge of deviations,
+   features, or other context.  For the latter, wrapping the example in
+   an instance data file format (defined by [RFC9195]) can make explicit
+   which modules and context are in use.  This approach can handle more
+   complicated example validation at the cost of a bit more verbosity.
+   We distinguish between two categories of examples for validation
+   purposes:
+
+2.1.1.  Simple Validation Examples
+
+   These are straightforward examples that instantiate YANG modules
+   defined in the same document, with a self-contained context.  An
+   extraction tool can load the YANG module(s) defined in the document
+   (plus any standard modules they import) and then validate the example
+   instance against those modules.  For instance, if a draft defines a
+   YANG module "example-interfaces" and provides a small XML snippet
+   configuring an interface, the tool will use the "example-interfaces"
+   module (and any of its dependencies) to verify that the XML conforms
+   to the schema.  In general, simple examples illustrate how to use the
+   module(s) in the draft and can be validated with minimal additional
+   information beyond what the document itself provides.
+
+2.1.2.  Complex Examples with External References
+
+   These are examples that require additional context or external
+   modules beyond those defined in the current document.  For example,
+   an instance data set may involve multiple modules (perhaps a module
+   from the draft where the module is defined plus some from another
+   draft with another module), or it might describe operational state
+   data that requires a specific datastore context or feature set.  For
+   such cases, we propose that the example be presented as a YANG
+   instance data file using the standard format defined in [RFC9195]
+   (the YANG Instance Data File Format).  In practice, this means the
+   example should be wrapped in the instance-data-set structure which
+   includes the necessary metadata (such as module names, revisions, and
+   target datastore) for validation.
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 4]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   For an XML complex example, the first element of the snippet should
+   be <instance-data-set xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-
+   instance-data">, with the content formatted according to [RFC9195].
+   Inside this element, sub-elements specify what YANG content schema
+   the instance data conforms to (including module names, revision
+   dates, features, deviations, and the intended datastore).  Similarly,
+   for a JSON-formatted complex example, the top-level JSON object
+   should have a single key "ietf-yang-instance-data:instance-data-set",
+   whose value is an object providing the same kind of metadata and the
+   actual data set.  By using the [RFC9195] instance-data-set wrapper,
+   the metadata needed to identify the intended content schema can be
+   carried with the example.  A validation tool can use that metadata
+   together with the available YANG modules to construct the appropriate
+   schema context.  A validation tool such as [YANGLINT] (with
+   appropriate support for [RFC9195]) can then verify the embedded data
+   content against the assembled schema.  Validation of an [RFC9195]
+   instance data set follows the semantics defined in [RFC9195],
+   including its rules for partial data sets.
+
+2.2.  Including Auxiliary YANG Modules for Examples
+
+   Sometimes an example instance cannot be validated or understood
+   without additional YANG definitions that are not part of the main
+   module in the document.  One common case is when the module includes
+   groupings that are meant to be used by other modules.  In those
+   cases, the document might contain an example module (not official)
+   that uses the groupings.  Another common case is the use of YANG
+   deviations or vendor-specific augmentations to adapt a base module.
+   In principle, deviations are meant to be extraordinary measures (and
+   their use is discouraged in final standards), but in practice they
+   are sometimes used in industry deployments.
+
+   To illustrate how a deviation or augmentation affects the data, an
+   RFC might need to include a small auxiliary YANG module (for example,
+   a module that contains deviation statements targeting the base
+   module) purely for use in example validation.  The challenge is to do
+   this without confusing readers or tools and without "contaminating"
+   the main normative content of the document.  This document defines
+   yang/examples/ and yang/auxiliary/ as logical artifact categories;
+   other YANG-related artifact categories could be defined later.
+
+   Auxiliary YANG modules SHOULD use a logical artifact name under yang/
+   auxiliary/, for example yang/auxiliary/example-foo.yang.  In
+   accordance with [RFC9907] Section 3.2.1, example YANG modules MUST
+   NOT use the CODE BEGINS / CODE ENDS convention.  They can
+   nevertheless be represented by a sourcecode element with a machine-
+   readable name attribute, without markers="true".
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 5]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   *  Keep Auxiliary Modules Separate: Include the auxiliary module in a
+      way that makes it clear that it is not a normative YANG module
+      from the document.  A validation tool processing an example that
+      requires the auxiliary module would make that module available as
+      part of the example's schema context.
+
+   *  Clearly Identify the Module as Non-Normative: The auxiliary module
+      should be clearly identified as an example-only, non-normative
+      module.  This can be achieved through both its naming and its
+      content.  In the module source itself, the module name SHOULD use
+      the example- prefix as specified in [RFC9907], and the namespace
+      should indicate that it is not an official module.  For example,
+      use a namespace URI containing "example.com" or similar.
+
+   *  Explain in the Narrative: In the text surrounding the code,
+      explicitly state that this module is an auxiliary construct
+      provided for the sake of the example.  For instance: "The
+      following YANG module is an example showing how a deviation could
+      be used for this scenario; it is not a normative part of this
+      specification."  This clarification is important for human readers
+      and reviewers to avoid any confusion.
+
+   By following these practices, authors can include necessary YANG
+   deviations or supplemental modules to support their examples while
+   making it clear that these are not part of the official data model
+   being defined.  Tools that extract and compile YANG modules from the
+   document can be instructed to either ignore these example-only
+   modules or handle them separately.  For example, a tool might compile
+   them only in the context of validating the corresponding example, and
+   not raise an error about their presence or treat them as missing
+   normative modules in the draft.
+
+3.  IANA Considerations
+
+   This document has no IANA actions.
+
+4.  Security Considerations
+
+   Tools that extract artifacts using logical names MUST prevent a
+   logical name from escaping the intended extraction location.  Tools
+   that process untrusted XML, JSON, or YANG artifacts should apply
+   appropriate resource limits.
+
+5.  Normative References
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 6]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
+              RFC 7950, DOI 10.17487/RFC7950, August 2016,
+              <https://www.rfc-editor.org/info/rfc7950>.
+
+   [RFC7991]  Hoffman, P., "The "xml2rfc" Version 3 Vocabulary",
+              RFC 7991, DOI 10.17487/RFC7991, December 2016,
+              <https://www.rfc-editor.org/info/rfc7991>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
+              Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
+              2022, <https://www.rfc-editor.org/info/rfc9195>.
+
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
+
+6.  Informative References
+
+   [I-D.CAR-CY-YANG-COVERAGE]
+              Cardona, C. and B. Claise, "YANG Module Coverage by
+              Examples in IETF Documents", Work in Progress, Internet-
+              Draft, draft-cardona-claise-netmod-yang-coverage,
+              <https://datatracker.ietf.org/doc/draft-cardona-claise-
+              netmod-yang-coverage/>.
+
+   [YANGLINT] CESNET, "libyang and yanglint Repository",
+              <https://github.com/CESNET/libyang>.
+
+Authors' Addresses
+
+   Camilo Cardona
+   NTT
+   164-168, Carrer de Numancia
+   08029 Barcelona Catalonia
+   Spain
+   Email: camilo@gin.ntt.net
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 7]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
+   Benoit Claise
+   Everything OPS & Arrcus
+   Email: benoit@everything-ops.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 8]
