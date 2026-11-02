@@ -62,12 +62,16 @@
       <t>For example, the following RFCXML markup illustrates how an XML instance might be included:</t>
       <artwork type="xml"><![CDATA[
 <sourcecode type="xml"
-            name="yang/examples/valid-interface-config.xml"> ... </sourcecode>
+            name="yang/examples/valid-interface-config.xml">
+  ...
+</sourcecode>
       ]]></artwork>
       <t>And a JSON instance as:</t>
       <artwork type="xml"><![CDATA[
 <sourcecode type="json"
-            name="yang/examples/valid-interface-config.json"> ... </sourcecode>
+            name="yang/examples/valid-interface-config.json">
+  ...
+</sourcecode>
       ]]></artwork>
       <t>By following this approach, a tool can scan the RFCXML source for <tt>sourcecode</tt> elements whose logical names are under <tt>yang/examples/</tt>, start with <tt>valid-</tt>, and end in <tt>.xml</tt> or <tt>.json</tt>, extract their contents, and validate them against the appropriate YANG modules.</t>
       <t>In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might not place the snippet under <tt>yang/examples/</tt>, or might not use the <tt>valid-</tt> prefix. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples extractable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.</t>
