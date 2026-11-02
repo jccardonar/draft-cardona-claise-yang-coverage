@@ -137,20 +137,18 @@ Internet-Draft                YANG Examples                 October 2026
    mirror the logical hierarchy.  This document does not define the
    structure of such repositories.
 
-   For example, an XML instance might be included as:
+   For example, the following RFCXML markup illustrates how an XML
+   instance might be included:
 
-   <CODE BEGINS> file "yang/examples/valid-interface-config.xml"
-   <?xml version="1.0" encoding="UTF-8"?>
-   <data> ... </data>
-   <CODE ENDS>
+   <sourcecode type="xml"
+               name="yang/examples/valid-interface-config.xml"
+               markers="true"> ... </sourcecode>
 
    And a JSON instance as:
 
-   <CODE BEGINS> file "yang/examples/valid-interface-config.json"
-   {
-     "interface": { ... }
-   }
-   <CODE ENDS>
+   <sourcecode type="json"
+               name="yang/examples/valid-interface-config.json"
+               markers="true"> ... </sourcecode>
 
    By following this approach, a tool can scan the RFCXML source or the
    rendered document for code blocks whose logical names are under yang/
@@ -162,6 +160,8 @@ Internet-Draft                YANG Examples                 October 2026
    fragment, or intentionally invalid to illustrate an error), the
    author can indicate this so that automated validators skip it.  For
    example, an author might not place the snippet under yang/examples/,
+   or might not use the valid- prefix.  An author could also include an
+   explicit note in the text indicating that a given snippet is not for
 
 
 
@@ -170,8 +170,6 @@ Cardona & Claise           Expires 3 May 2027                   [Page 3]
 Internet-Draft                YANG Examples                 October 2026
 
 
-   or might not use the valid- prefix.  An author could also include an
-   explicit note in the text indicating that a given snippet is not for
    validation.  Using these conventions strikes a balance between making
    examples extractable and allowing flexibility for authors to include
    non-valid illustrative snippets when necessary.
@@ -217,6 +215,8 @@ Internet-Draft                YANG Examples                 October 2026
    example should be wrapped in the instance-data-set structure which
    includes the necessary metadata (such as module names, revisions, and
    target datastore) for validation.
+
+
 
 
 
@@ -343,10 +343,6 @@ Internet-Draft                YANG Examples                 October 2026
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
-              RFC 7950, DOI 10.17487/RFC7950, August 2016,
-              <https://www.rfc-editor.org/info/rfc7950>.
-
    [RFC7991]  Hoffman, P., "The "xml2rfc" Version 3 Vocabulary",
               RFC 7991, DOI 10.17487/RFC7991, December 2016,
               <https://www.rfc-editor.org/info/rfc7991>.
@@ -366,13 +362,6 @@ Internet-Draft                YANG Examples                 October 2026
 
 6.  Informative References
 
-   [I-D.CAR-CY-YANG-COVERAGE]
-              Cardona, C. and B. Claise, "YANG Module Coverage by
-              Examples in IETF Documents", Work in Progress, Internet-
-              Draft, draft-cardona-claise-netmod-yang-coverage,
-              <https://datatracker.ietf.org/doc/draft-cardona-claise-
-              netmod-yang-coverage/>.
-
    [YANGLINT] CESNET, "libyang and yanglint Repository",
               <https://github.com/CESNET/libyang>.
 
@@ -384,14 +373,6 @@ Authors' Addresses
    08029 Barcelona Catalonia
    Spain
    Email: camilo@gin.ntt.net
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 7]
-
-Internet-Draft                YANG Examples                 October 2026
 
 
    Benoit Claise
@@ -408,41 +389,4 @@ Internet-Draft                YANG Examples                 October 2026
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 8]
+Cardona & Claise           Expires 3 May 2027                   [Page 7]

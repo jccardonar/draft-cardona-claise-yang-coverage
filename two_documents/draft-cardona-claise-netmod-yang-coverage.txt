@@ -89,8 +89,7 @@ Table of Contents
    vital to illustrate how a module is intended to be used.  [RFC9907]
    provides guidelines for authors and reviewers of documents containing
    YANG data models, including recommendations for usage examples and
-   validation of valid data instances.  The YANG data modeling language
-   itself is specified in [RFC7950].
+   validation of valid data instances.
 
 2.  YANG Module Coverage by Examples
 
@@ -98,21 +97,6 @@ Table of Contents
    readers, but can also improve the quality of the module itself.  We
    introduce the concept of YANG module coverage as a way to measure how
    thoroughly the provided examples exercise the data model.
-
-
-
-
-
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 2]
-
-Internet-Draft                YANG Coverage                 October 2026
-
 
    By analogy to code coverage in software testing (which checks what
    fraction of code is executed by tests), YANG module coverage looks at
@@ -122,6 +106,13 @@ Internet-Draft                YANG Coverage                 October 2026
    YANG module that have a value in one or more example instances.  A
    simple quantitative metric could be the percentage of the module's
    leaf and leaf-list nodes that appear in at least one example.
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 2]
+
+Internet-Draft                YANG Coverage                 October 2026
+
 
    For instance, if a YANG module defines 100 configurable or state leaf
    nodes, and the examples collectively include 45 of those leaves, one
@@ -165,6 +156,15 @@ Internet-Draft                YANG Coverage                 October 2026
 
 
 
+
+
+
+
+
+
+
+
+
 Cardona & Claise           Expires 3 May 2027                   [Page 3]
 
 Internet-Draft                YANG Coverage                 October 2026
@@ -195,7 +195,7 @@ Internet-Draft                YANG Coverage                 October 2026
 
    And this example instance:
 
-   <CODE BEGINS> file "yang/examples/valid-device-config.xml"
+   <CODE BEGINS> file "example-device-config.xml"
    <device xmlns="http://example.com/device">
      <hostname>router1</hostname>
      <interface>
@@ -312,7 +312,7 @@ Internet-Draft                YANG Coverage                 October 2026
    Yangson [YANGSON] as a library for loading YANG modules and
    validating instance data, and then implements the coverage logic
    described in this document.  We will attempt to push these ideas
-   direclty to Yangson as we continue our work.
+   directly to Yangson as we continue our work.
 
    Yangson already exposes validation counters for schema nodes and can
    print a complete schema tree annotated with those counters.  This is
@@ -355,27 +355,16 @@ Internet-Draft                YANG Coverage                 October 2026
 
 7.  Normative References
 
-   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
-              RFC 7950, DOI 10.17487/RFC7950, August 2016,
-              <https://www.rfc-editor.org/info/rfc7950>.
+8.  Informative References
 
    [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
               for Authors and Reviewers of Documents Containing YANG
               Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
               March 2026, <https://www.rfc-editor.org/info/rfc9907>.
 
-8.  Informative References
-
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
               <https://www.rfc-editor.org/info/rfc8340>.
-
-   [I-D.CAR-CY-YANG-EXAMPLES]
-              Cardona, C. and B. Claise, "Guidelines for YANG Example
-              and Supporting Artifacts in IETF Documents", Work in
-              Progress, Internet-Draft, draft-cardona-claise-netmod-
-              yang-examples, <https://datatracker.ietf.org/doc/draft-
-              cardona-claise-netmod-yang-examples/>.
 
    [YANGSON]  CZ.NIC, "Yangson Documentation",
               <https://yangson.labs.nic.cz/>.
@@ -386,14 +375,6 @@ Internet-Draft                YANG Coverage                 October 2026
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., and J. Sterne, "YANG
               Packages", Work in Progress, Internet-Draft, draft-ietf-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 7]
-
-Internet-Draft                YANG Coverage                 October 2026
-
-
               netmod-yang-packages-10, 20 October 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
               yang-packages-10>.
@@ -402,6 +383,16 @@ Internet-Draft                YANG Coverage                 October 2026
               IETF OPS AD, ""Internet-Draft with YANG Modules" Template
               Repository",
               <https://github.com/IETF-OPS-AD/I-D-with-yang-template>.
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 7]
+
+Internet-Draft                YANG Coverage                 October 2026
+
 
    [I-D-WITH-YANG-TOOLS]
               IETF OPS AD, "I-D-with-yang-tools Repository",
@@ -429,6 +420,15 @@ Authors' Addresses
    Benoit Claise
    Everything OPS & Arrcus
    Email: benoit@everything-ops.net
+
+
+
+
+
+
+
+
+
 
 
 
