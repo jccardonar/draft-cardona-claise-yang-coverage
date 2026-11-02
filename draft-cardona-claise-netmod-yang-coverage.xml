@@ -86,7 +86,7 @@ module example-device {
 }
         ]]></sourcecode>
         <t>And this example instance:</t>
-        <sourcecode type="xml" name="example-device-config.xml" markers="true"><![CDATA[
+        <sourcecode type="xml" name="example-device-config.xml"><![CDATA[
 <device xmlns="http://example.com/device">
   <hostname>router1</hostname>
   <interface>
@@ -147,9 +147,6 @@ device
     </section>
   </middle>
   <back>
-    <references>
-      <name>Normative References</name>
-    </references>
     <references>
       <name>Informative References</name>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/>

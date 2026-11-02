@@ -43,35 +43,33 @@
     <keyword>examples</keyword>
     <keyword>artifacts</keyword>
     <abstract>
-      <t>This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate, and it requires examples that illustrate a valid data instance to use code markers and these naming conventions.</t>
+      <t>This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate.</t>
     </abstract>
   </front>
   <middle>
     <section>
       <name>Introduction</name>
       <t>Although the YANG data modeling language has been in use for over a decade, people defining or evaluating YANG modules have limited guidance on how to include, extract, and test example data for those modules. Example data instances are vital to illustrate how a module is intended to be used. <xref target="RFC9907"/> provides guidelines for authors and reviewers of documents containing YANG data models, including some recommendations for usage examples and validation of valid data instances, but it still lacks an exact methodology that tools could use to work with them.</t>
-      <t>This document defines conventions that allow tools to identify, extract, organize, and validate YANG-related examples and supporting artifacts. It updates the usage-example guidance in Section 3.12 of <xref target="RFC9907"/> by making code markers and these conventions mandatory for examples that illustrate a valid data instance (<xref target="updates-9907"/>). All other example and validation guidance in <xref target="RFC9907"/> is unchanged.</t>
+      <t>This document defines conventions that allow tools to identify, extract, organize, and validate YANG-related examples and supporting artifacts. It updates the usage-example guidance in Section 3.12 of <xref target="RFC9907"/> by requiring examples that illustrate a valid data instance to follow the naming conventions defined in this document (Section 2). All other example and validation guidance in <xref target="RFC9907"/> is unchanged. See <xref target="updates-9907"/> for the precise update.</t>
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
     </section>
     <section>
       <name>Including YANG Example Instances in IETF Documents</name>
-      <t>When authors include example YANG instances in an RFC or Internet-Draft, example instances intended for automatic extraction and validation MUST use the conventions in this section. Other example instances MAY use different conventions.</t>
-      <t>For XML or JSON instance examples intended for automatic extraction and validation, authors MUST enclose the example in the code markers "&lt;CODE BEGINS&gt;" and "&lt;CODE ENDS&gt;", with the "&lt;CODE BEGINS&gt;" marker followed by a file name that gives the logical name of the artifact, so that the example can be extracted from the rendered document. This document defines path-like conventions for that logical name (similar to, but not the same as, a file system path). In RFCXML, this is produced by a <tt>sourcecode</tt> element whose <tt>name</tt> attribute <xref target="RFC7991"/> carries the logical name and whose <tt>markers</tt> attribute <xref target="RFCXML-VOCABULARY"/> is set to "true".</t>
-      <t>Example instances intended to be valid and automatically processed MUST use the logical artifact names <tt>yang/examples/valid-&lt;name&gt;.xml</tt> for XML instances and <tt>yang/examples/valid-&lt;name&gt;.json</tt> for JSON instances. Each name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). For an <xref target="RFC9195"/> instance data set, the portion following <tt>valid-</tt> SHOULD follow the filename conventions in <xref target="RFC9195"/>. The <tt>valid-</tt> prefix is added by this document to identify an instance intended for automatic validation.</t>
+      <t>When authors include example YANG instances in an RFC or Internet-Draft, examples that are meant to illustrate a valid data instance MUST use the conventions in this section. Other example instances MAY use different conventions.</t>
+      <t>For XML or JSON instance examples covered by this section, authors MUST place the example in an RFCXML <tt>sourcecode</tt> element whose <tt>name</tt> attribute <xref target="RFC7991"/> gives the logical name of the artifact. Tools implementing this specification MUST use the <tt>sourcecode</tt> <tt>name</tt> to identify examples for extraction and validation. Code markers are not part of the identification mechanism defined by this document; their use remains governed by <xref target="RFC9907"/>. This document defines path-like conventions for the logical name, similar to, but not the same as, a file system path.</t>
+      <t>Example instances that are meant to illustrate a valid data instance MUST use the logical artifact names <tt>yang/examples/valid-&lt;name&gt;.xml</tt> for XML instances and <tt>yang/examples/valid-&lt;name&gt;.json</tt> for JSON instances. Each name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). For an <xref target="RFC9195"/> instance data set, the portion following <tt>valid-</tt> SHOULD follow the filename conventions in <xref target="RFC9195"/>. The <tt>valid-</tt> prefix is added by this document to identify an instance intended for automatic validation.</t>
       <t>The hierarchical filename is primarily a logical artifact name and classification. During draft development, an accompanying Git repository or other external artifact collection MAY mirror the same logical layout. Where practical, an external repository SHOULD mirror the logical hierarchy. This document does not define the structure of such repositories.</t>
       <t>For example, the following RFCXML markup illustrates how an XML instance might be included:</t>
       <artwork type="xml"><![CDATA[
 <sourcecode type="xml"
-            name="yang/examples/valid-interface-config.xml"
-            markers="true"> ... </sourcecode>
+            name="yang/examples/valid-interface-config.xml"> ... </sourcecode>
       ]]></artwork>
       <t>And a JSON instance as:</t>
       <artwork type="xml"><![CDATA[
 <sourcecode type="json"
-            name="yang/examples/valid-interface-config.json"
-            markers="true"> ... </sourcecode>
+            name="yang/examples/valid-interface-config.json"> ... </sourcecode>
       ]]></artwork>
-      <t>By following this approach, a tool can scan the RFCXML source or the rendered document for code blocks whose logical names are under <tt>yang/examples/</tt>, start with <tt>valid-</tt>, and end in <tt>.xml</tt> or <tt>.json</tt>, extract their contents, and validate them against the appropriate YANG modules.</t>
+      <t>By following this approach, a tool can scan the RFCXML source for <tt>sourcecode</tt> elements whose logical names are under <tt>yang/examples/</tt>, start with <tt>valid-</tt>, and end in <tt>.xml</tt> or <tt>.json</tt>, extract their contents, and validate them against the appropriate YANG modules.</t>
       <t>In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might not place the snippet under <tt>yang/examples/</tt>, or might not use the <tt>valid-</tt> prefix. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples extractable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.</t>
       <section>
         <name>Types of Example Validation</name>
@@ -108,7 +106,7 @@
       </blockquote>
       <t>NEW:</t>
       <blockquote>
-        <t>In order to ease extraction and validation of examples, it is RECOMMENDED to use code markers. Examples that are meant to illustrate a valid data instance MUST use code markers and MUST follow the naming conventions defined in RFC XXXX.</t>
+        <t>In order to ease extraction and validation of examples, it is RECOMMENDED to use code markers. Examples that are meant to illustrate a valid data instance MUST follow the naming conventions defined in RFC XXXX.</t>
       </blockquote>
       <t>Note to the RFC Editor: please replace XXXX with the RFC number assigned to this document, and remove this note.</t>
     </section>
@@ -122,19 +120,9 @@
     </section>
   </middle>
   <back>
-    <references><name>Normative References</name>&RFC2119;&RFC8174;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/></references>
+    <references><name>Normative References</name>&RFC2119;&RFC8174;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7991.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/></references>
     <references>
       <name>Informative References</name>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7991.xml"/>
-      <reference anchor="RFCXML-VOCABULARY" target="https://authors.ietf.org/rfcxml-vocabulary">
-        <front>
-          <title>RFCXML Vocabulary Reference</title>
-          <author>
-            <organization>IETF</organization>
-          </author>
-          <date/>
-        </front>
-      </reference>
       <reference anchor="YANGLINT" target="https://github.com/CESNET/libyang">
         <front>
           <title>libyang and yanglint Repository</title>
