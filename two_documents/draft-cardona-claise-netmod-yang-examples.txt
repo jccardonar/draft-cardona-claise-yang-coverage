@@ -17,9 +17,7 @@ Abstract
    This document updates RFC 9907 guidance for including YANG-related
    examples and supporting artifacts in IETF documents.  It defines
    naming conventions that make those artifacts easier for tools to
-   identify, extract, organize, and validate, and it requires examples
-   that illustrate a valid data instance to use code markers and these
-   naming conventions.
+   identify, extract, organize, and validate.
 
 Status of This Memo
 
@@ -43,21 +41,6 @@ Copyright Notice
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-
-
-
-
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 1]
-
-Internet-Draft                YANG Examples                 October 2026
-
-
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
@@ -67,19 +50,27 @@ Internet-Draft                YANG Examples                 October 2026
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
 
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 1]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Including YANG Example Instances in IETF Documents  . . . . .   3
+   2.  Including YANG Example Instances in IETF Documents  . . . . .   2
      2.1.  Types of Example Validation . . . . . . . . . . . . . . .   4
        2.1.1.  Simple Validation Examples  . . . . . . . . . . . . .   4
-       2.1.2.  Complex Examples with External References . . . . . .   5
+       2.1.2.  Complex Examples with External References . . . . . .   4
      2.2.  Including Auxiliary YANG Modules for Examples . . . . . .   5
-   3.  Updates to RFC 9907 . . . . . . . . . . . . . . . . . . . . .   7
+   3.  Updates to RFC 9907 . . . . . . . . . . . . . . . . . . . . .   6
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    6.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
-   7.  Informative References  . . . . . . . . . . . . . . . . . . .   8
+   7.  Informative References  . . . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -97,15 +88,24 @@ Table of Contents
    This document defines conventions that allow tools to identify,
    extract, organize, and validate YANG-related examples and supporting
    artifacts.  It updates the usage-example guidance in Section 3.12 of
-   [RFC9907] by making code markers and these conventions mandatory for
-   examples that illustrate a valid data instance (Section 3).  All
-   other example and validation guidance in [RFC9907] is unchanged.
+   [RFC9907] by requiring examples that illustrate a valid data instance
+   to follow the naming conventions defined in this document
+   (Section 2).  All other example and validation guidance in [RFC9907]
+   is unchanged.  See Section 3 for the precise update.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in
    [RFC2119] [RFC8174] when, and only when, they appear in all capitals,
    as shown here.
+
+2.  Including YANG Example Instances in IETF Documents
+
+   When authors include example YANG instances in an RFC or Internet-
+   Draft, examples that are meant to illustrate a valid data instance
+   MUST use the conventions in this section.  Other example instances
+   MAY use different conventions.
+
 
 
 
@@ -114,25 +114,17 @@ Cardona & Claise           Expires 3 May 2027                   [Page 2]
 Internet-Draft                YANG Examples                 October 2026
 
 
-2.  Including YANG Example Instances in IETF Documents
+   For XML or JSON instance examples covered by this section, authors
+   MUST place the example in an RFCXML sourcecode element whose name
+   attribute [RFC7991] gives the logical name of the artifact.  Tools
+   implementing this specification MUST use the sourcecode name to
+   identify examples for extraction and validation.  Code markers are
+   not part of the identification mechanism defined by this document;
+   their use remains governed by [RFC9907].  This document defines path-
+   like conventions for the logical name, similar to, but not the same
+   as, a file system path.
 
-   When authors include example YANG instances in an RFC or Internet-
-   Draft, example instances intended for automatic extraction and
-   validation MUST use the conventions in this section.  Other example
-   instances MAY use different conventions.
-
-   For XML or JSON instance examples intended for automatic extraction
-   and validation, authors MUST enclose the example in the code markers
-   "<CODE BEGINS>" and "<CODE ENDS>", with the "<CODE BEGINS>" marker
-   followed by a file name that gives the logical name of the artifact,
-   so that the example can be extracted from the rendered document.
-   This document defines path-like conventions for that logical name
-   (similar to, but not the same as, a file system path).  In RFCXML,
-   this is produced by a sourcecode element whose name attribute
-   [RFC7991] carries the logical name and whose markers attribute
-   [RFCXML-VOCABULARY] is set to "true".
-
-   Example instances intended to be valid and automatically processed
+   Example instances that are meant to illustrate a valid data instance
    MUST use the logical artifact names yang/examples/valid-<name>.xml
    for XML instances and yang/examples/valid-<name>.json for JSON
    instances.  Each name SHOULD be unique within a document (and ideally
@@ -153,14 +145,22 @@ Internet-Draft                YANG Examples                 October 2026
    instance might be included:
 
    <sourcecode type="xml"
-               name="yang/examples/valid-interface-config.xml"
-               markers="true"> ... </sourcecode>
+               name="yang/examples/valid-interface-config.xml">
+     ...
+   </sourcecode>
 
    And a JSON instance as:
 
    <sourcecode type="json"
-               name="yang/examples/valid-interface-config.json"
-               markers="true"> ... </sourcecode>
+               name="yang/examples/valid-interface-config.json">
+     ...
+   </sourcecode>
+
+   By following this approach, a tool can scan the RFCXML source for
+   sourcecode elements whose logical names are under yang/examples/,
+   start with valid-, and end in .xml or .json, extract their contents,
+   and validate them against the appropriate YANG modules.
+
 
 
 
@@ -169,11 +169,6 @@ Cardona & Claise           Expires 3 May 2027                   [Page 3]
 
 Internet-Draft                YANG Examples                 October 2026
 
-
-   By following this approach, a tool can scan the RFCXML source or the
-   rendered document for code blocks whose logical names are under yang/
-   examples/, start with valid-, and end in .xml or .json, extract their
-   contents, and validate them against the appropriate YANG modules.
 
    In cases where an included code snippet is not meant to represent a
    valid YANG instance (for instance, it might be pseudocode, a partial
@@ -213,19 +208,6 @@ Internet-Draft                YANG Examples                 October 2026
    module(s) in the draft and can be validated with minimal additional
    information beyond what the document itself provides.
 
-
-
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 4]
-
-Internet-Draft                YANG Examples                 October 2026
-
-
 2.1.2.  Complex Examples with External References
 
    These are examples that require additional context or external
@@ -236,6 +218,14 @@ Internet-Draft                YANG Examples                 October 2026
    data that requires a specific datastore context or feature set.  For
    such cases, we propose that the example be presented as a YANG
    instance data file using the standard format defined in [RFC9195]
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 4]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
    (the YANG Instance Data File Format).  In practice, this means the
    example should be wrapped in the instance-data-set structure which
    includes the necessary metadata (such as module names, revisions, and
@@ -273,15 +263,6 @@ Internet-Draft                YANG Examples                 October 2026
    their use is discouraged in final standards), but in practice they
    are sometimes used in industry deployments.
 
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 5]
-
-Internet-Draft                YANG Examples                 October 2026
-
-
    To illustrate how a deviation or augmentation affects the data, an
    RFC might need to include a small auxiliary YANG module (for example,
    a module that contains deviation statements targeting the base
@@ -290,6 +271,16 @@ Internet-Draft                YANG Examples                 October 2026
    the main normative content of the document.  This document defines
    yang/examples/ and yang/auxiliary/ as logical artifact categories;
    other YANG-related artifact categories could be defined later.
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 5]
+
+Internet-Draft                YANG Examples                 October 2026
+
 
    Auxiliary YANG modules SHOULD use a logical artifact name under yang/
    auxiliary/, for example yang/auxiliary/example-foo.yang.  In
@@ -330,14 +321,6 @@ Internet-Draft                YANG Examples                 October 2026
    not raise an error about their presence or treat them as missing
    normative modules in the draft.
 
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 6]
-
-Internet-Draft                YANG Examples                 October 2026
-
-
 3.  Updates to RFC 9907
 
    This document updates Section 3.12 of [RFC9907] as follows.
@@ -347,12 +330,20 @@ Internet-Draft                YANG Examples                 October 2026
    |  In order to ease extraction and validation of examples, it is
    |  RECOMMENDED to use code markers.
 
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 6]
+
+Internet-Draft                YANG Examples                 October 2026
+
+
    NEW:
 
    |  In order to ease extraction and validation of examples, it is
    |  RECOMMENDED to use code markers.  Examples that are meant to
-   |  illustrate a valid data instance MUST use code markers and MUST
-   |  follow the naming conventions defined in RFC XXXX.
+   |  illustrate a valid data instance MUST follow the naming
+   |  conventions defined in RFC XXXX.
 
    Note to the RFC Editor: please replace XXXX with the RFC number
    assigned to this document, and remove this note.
@@ -379,11 +370,20 @@ Internet-Draft                YANG Examples                 October 2026
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+   [RFC7991]  Hoffman, P., "The "xml2rfc" Version 3 Vocabulary",
+              RFC 7991, DOI 10.17487/RFC7991, December 2016,
+              <https://www.rfc-editor.org/info/rfc7991>.
+
    [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
               2022, <https://www.rfc-editor.org/info/rfc9195>.
 
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
 
+7.  Informative References
 
 
 
@@ -393,21 +393,6 @@ Cardona & Claise           Expires 3 May 2027                   [Page 7]
 
 Internet-Draft                YANG Examples                 October 2026
 
-
-   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
-              for Authors and Reviewers of Documents Containing YANG
-              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
-              March 2026, <https://www.rfc-editor.org/info/rfc9907>.
-
-7.  Informative References
-
-   [RFC7991]  Hoffman, P., "The "xml2rfc" Version 3 Vocabulary",
-              RFC 7991, DOI 10.17487/RFC7991, December 2016,
-              <https://www.rfc-editor.org/info/rfc7991>.
-
-   [RFCXML-VOCABULARY]
-              IETF, "RFCXML Vocabulary Reference",
-              <https://authors.ietf.org/rfcxml-vocabulary>.
 
    [YANGLINT] CESNET, "libyang and yanglint Repository",
               <https://github.com/CESNET/libyang>.
@@ -425,6 +410,21 @@ Authors' Addresses
    Benoit Claise
    Everything OPS & Arrcus
    Email: benoit@everything-ops.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

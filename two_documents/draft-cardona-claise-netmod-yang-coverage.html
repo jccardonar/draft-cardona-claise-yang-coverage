@@ -1161,13 +1161,10 @@ svg {
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1206,15 +1203,33 @@ module example-device {
   revision 2026-06-25 { description "Initial example revision."; }
   container device {
     description "Top-level device configuration.";
-    leaf hostname { type string; description "The device hostname."; }
-    leaf location { type string; description "Physical location of the device."; }
-    leaf admin-state { type boolean; description "Administrative state of the device."; }
+    leaf hostname {
+      type string;
+      description "The device hostname.";
+    }
+    leaf location {
+      type string;
+      description "Physical location of the device.";
+    }
+    leaf admin-state {
+      type boolean;
+      description "Administrative state of the device.";
+    }
     list interface {
       key "name";
       description "List of device interfaces.";
-      leaf name { type string; description "Interface name; the list key."; }
-      leaf enabled { type boolean; description "Whether the interface is enabled."; }
-      leaf other { type boolean; description "An additional example leaf."; }
+      leaf name {
+        type string;
+        description "Interface name; the list key.";
+      }
+      leaf enabled {
+        type boolean;
+        description "Whether the interface is enabled.";
+      }
+      leaf other {
+        type boolean;
+        description "An additional example leaf.";
+      }
     }
   }
 }
@@ -1222,8 +1237,7 @@ module example-device {
 </div>
 <p id="section-2.1-3">And this example instance:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-2.1-4">
-<pre>&lt;CODE BEGINS&gt; file "example-device-config.xml"
-
+<pre>
 &lt;device xmlns="http://example.com/device"&gt;
   &lt;hostname&gt;router1&lt;/hostname&gt;
   &lt;interface&gt;
@@ -1231,8 +1245,7 @@ module example-device {
     &lt;enabled&gt;true&lt;/enabled&gt;
   &lt;/interface&gt;
 &lt;/device&gt;
-
-&lt;CODE ENDS&gt;</pre><a href="#section-2.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-2.1-4" class="pilcrow">¶</a>
 </div>
 <p id="section-2.1-5">A potential coverage analysis tool could then show:<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1309,13 +1322,8 @@ device
 </section>
 </div>
 <section id="section-7">
-      <h2 id="name-normative-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-    </h2>
-</section>
-<section id="section-8">
       <h2 id="name-informative-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC9907">[RFC9907]</dt>

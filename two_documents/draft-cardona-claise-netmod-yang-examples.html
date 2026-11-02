@@ -8,7 +8,7 @@
 <meta content="Camilo Cardona" name="author">
 <meta content="Benoit Claise" name="author">
 <meta content="
-       This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate, and it requires examples that illustrate a valid data instance to use code markers and these naming conventions. 
+       This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate. 
     " name="description">
 <meta content="xml2rfc 3.34.1" name="generator">
 <meta content="YANG" name="keyword">
@@ -1088,7 +1088,7 @@ svg {
 <h1 id="title">Guidelines for YANG Example and Supporting Artifacts in IETF Documents</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate, and it requires examples that illustrate a valid data instance to use code markers and these naming conventions.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document updates RFC 9907 guidance for including YANG-related examples and supporting artifacts in IETF documents. It defines naming conventions that make those artifacts easier for tools to identify, extract, organize, and validate.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1187,34 +1187,36 @@ svg {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Although the YANG data modeling language has been in use for over a decade, people defining or evaluating YANG modules have limited guidance on how to include, extract, and test example data for those modules. Example data instances are vital to illustrate how a module is intended to be used. <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> provides guidelines for authors and reviewers of documents containing YANG data models, including some recommendations for usage examples and validation of valid data instances, but it still lacks an exact methodology that tools could use to work with them.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document defines conventions that allow tools to identify, extract, organize, and validate YANG-related examples and supporting artifacts. It updates the usage-example guidance in Section 3.12 of <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> by making code markers and these conventions mandatory for examples that illustrate a valid data instance (<a href="#updates-9907" class="auto internal xref">Section 3</a>). All other example and validation guidance in <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> is unchanged.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document defines conventions that allow tools to identify, extract, organize, and validate YANG-related examples and supporting artifacts. It updates the usage-example guidance in Section 3.12 of <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> by requiring examples that illustrate a valid data instance to follow the naming conventions defined in this document (Section 2). All other example and validation guidance in <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span> is unchanged. See <a href="#updates-9907" class="auto internal xref">Section 3</a> for the precise update.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 <section id="section-2">
       <h2 id="name-including-yang-example-inst">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-including-yang-example-inst" class="section-name selfRef">Including YANG Example Instances in IETF Documents</a>
       </h2>
-<p id="section-2-1">When authors include example YANG instances in an RFC or Internet-Draft, example instances intended for automatic extraction and validation MUST use the conventions in this section. Other example instances MAY use different conventions.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">For XML or JSON instance examples intended for automatic extraction and validation, authors MUST enclose the example in the code markers "&lt;CODE BEGINS&gt;" and "&lt;CODE ENDS&gt;", with the "&lt;CODE BEGINS&gt;" marker followed by a file name that gives the logical name of the artifact, so that the example can be extracted from the rendered document. This document defines path-like conventions for that logical name (similar to, but not the same as, a file system path). In RFCXML, this is produced by a <code>sourcecode</code> element whose <code>name</code> attribute <span>[<a href="#RFC7991" class="cite xref">RFC7991</a>]</span> carries the logical name and whose <code>markers</code> attribute <span>[<a href="#RFCXML-VOCABULARY" class="cite xref">RFCXML-VOCABULARY</a>]</span> is set to "true".<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">Example instances intended to be valid and automatically processed MUST use the logical artifact names <code>yang/examples/valid-&lt;name&gt;.xml</code> for XML instances and <code>yang/examples/valid-&lt;name&gt;.json</code> for JSON instances. Each name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). For an <span>[<a href="#RFC9195" class="cite xref">RFC9195</a>]</span> instance data set, the portion following <code>valid-</code> SHOULD follow the filename conventions in <span>[<a href="#RFC9195" class="cite xref">RFC9195</a>]</span>. The <code>valid-</code> prefix is added by this document to identify an instance intended for automatic validation.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-1">When authors include example YANG instances in an RFC or Internet-Draft, examples that are meant to illustrate a valid data instance MUST use the conventions in this section. Other example instances MAY use different conventions.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">For XML or JSON instance examples covered by this section, authors MUST place the example in an RFCXML <code>sourcecode</code> element whose <code>name</code> attribute <span>[<a href="#RFC7991" class="cite xref">RFC7991</a>]</span> gives the logical name of the artifact. Tools implementing this specification MUST use the <code>sourcecode</code> <code>name</code> to identify examples for extraction and validation. Code markers are not part of the identification mechanism defined by this document; their use remains governed by <span>[<a href="#RFC9907" class="cite xref">RFC9907</a>]</span>. This document defines path-like conventions for the logical name, similar to, but not the same as, a file system path.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">Example instances that are meant to illustrate a valid data instance MUST use the logical artifact names <code>yang/examples/valid-&lt;name&gt;.xml</code> for XML instances and <code>yang/examples/valid-&lt;name&gt;.json</code> for JSON instances. Each name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). For an <span>[<a href="#RFC9195" class="cite xref">RFC9195</a>]</span> instance data set, the portion following <code>valid-</code> SHOULD follow the filename conventions in <span>[<a href="#RFC9195" class="cite xref">RFC9195</a>]</span>. The <code>valid-</code> prefix is added by this document to identify an instance intended for automatic validation.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">The hierarchical filename is primarily a logical artifact name and classification. During draft development, an accompanying Git repository or other external artifact collection MAY mirror the same logical layout. Where practical, an external repository SHOULD mirror the logical hierarchy. This document does not define the structure of such repositories.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">For example, the following RFCXML markup illustrates how an XML instance might be included:<a href="#section-2-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text art-xml artwork" id="section-2-6">
 <pre>
 &lt;sourcecode type="xml"
-            name="yang/examples/valid-interface-config.xml"
-            markers="true"&gt; ... &lt;/sourcecode&gt;
+            name="yang/examples/valid-interface-config.xml"&gt;
+  ...
+&lt;/sourcecode&gt;
 </pre><a href="#section-2-6" class="pilcrow">¶</a>
 </div>
 <p id="section-2-7">And a JSON instance as:<a href="#section-2-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text art-xml artwork" id="section-2-8">
 <pre>
 &lt;sourcecode type="json"
-            name="yang/examples/valid-interface-config.json"
-            markers="true"&gt; ... &lt;/sourcecode&gt;
+            name="yang/examples/valid-interface-config.json"&gt;
+  ...
+&lt;/sourcecode&gt;
 </pre><a href="#section-2-8" class="pilcrow">¶</a>
 </div>
-<p id="section-2-9">By following this approach, a tool can scan the RFCXML source or the rendered document for code blocks whose logical names are under <code>yang/examples/</code>, start with <code>valid-</code>, and end in <code>.xml</code> or <code>.json</code>, extract their contents, and validate them against the appropriate YANG modules.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-9">By following this approach, a tool can scan the RFCXML source for <code>sourcecode</code> elements whose logical names are under <code>yang/examples/</code>, start with <code>valid-</code>, and end in <code>.xml</code> or <code>.json</code>, extract their contents, and validate them against the appropriate YANG modules.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might not place the snippet under <code>yang/examples/</code>, or might not use the <code>valid-</code> prefix. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples extractable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <section id="section-2.1">
         <h3 id="name-types-of-example-validation">
@@ -1265,7 +1267,7 @@ svg {
 </blockquote>
 <p id="section-3-4">NEW:<a href="#section-3-4" class="pilcrow">¶</a></p>
 <blockquote id="section-3-5">
-        <p id="section-3-5.1">In order to ease extraction and validation of examples, it is RECOMMENDED to use code markers. Examples that are meant to illustrate a valid data instance MUST use code markers and MUST follow the naming conventions defined in RFC XXXX.<a href="#section-3-5.1" class="pilcrow">¶</a></p>
+        <p id="section-3-5.1">In order to ease extraction and validation of examples, it is RECOMMENDED to use code markers. Examples that are meant to illustrate a valid data instance MUST follow the naming conventions defined in RFC XXXX.<a href="#section-3-5.1" class="pilcrow">¶</a></p>
 </blockquote>
 <p id="section-3-6">Note to the RFC Editor: please replace XXXX with the RFC number assigned to this document, and remove this note.<a href="#section-3-6" class="pilcrow">¶</a></p>
 </section>
@@ -1299,6 +1301,10 @@ svg {
       <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7991">[RFC7991]</dt>
+      <dd>
+<span class="refAuthor">Hoffman, P.</span>, <span class="refTitle">"The "xml2rfc" Version 3 Vocabulary"</span>, <span class="seriesInfo">RFC 7991</span>, <span class="seriesInfo">DOI 10.17487/RFC7991</span>, <time datetime="2016-12" class="refDate">December 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7991">https://www.rfc-editor.org/info/rfc7991</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9195">[RFC9195]</dt>
       <dd>
 <span class="refAuthor">Lengyel, B.</span> and <span class="refAuthor">B. Claise</span>, <span class="refTitle">"A File Format for YANG Instance Data"</span>, <span class="seriesInfo">RFC 9195</span>, <span class="seriesInfo">DOI 10.17487/RFC9195</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9195">https://www.rfc-editor.org/info/rfc9195</a>&gt;</span>. </dd>
@@ -1314,14 +1320,6 @@ svg {
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
-<dt id="RFC7991">[RFC7991]</dt>
-      <dd>
-<span class="refAuthor">Hoffman, P.</span>, <span class="refTitle">"The "xml2rfc" Version 3 Vocabulary"</span>, <span class="seriesInfo">RFC 7991</span>, <span class="seriesInfo">DOI 10.17487/RFC7991</span>, <time datetime="2016-12" class="refDate">December 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7991">https://www.rfc-editor.org/info/rfc7991</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFCXML-VOCABULARY">[RFCXML-VOCABULARY]</dt>
-      <dd>
-<span class="refAuthor">IETF</span>, <span class="refTitle">"RFCXML Vocabulary Reference"</span>, <span>&lt;<a href="https://authors.ietf.org/rfcxml-vocabulary">https://authors.ietf.org/rfcxml-vocabulary</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="YANGLINT">[YANGLINT]</dt>
     <dd>
 <span class="refAuthor">CESNET</span>, <span class="refTitle">"libyang and yanglint Repository"</span>, <span>&lt;<a href="https://github.com/CESNET/libyang">https://github.com/CESNET/libyang</a>&gt;</span>. </dd>

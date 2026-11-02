@@ -73,12 +73,11 @@ Table of Contents
    2.  YANG Module Coverage by Examples  . . . . . . . . . . . . . .   2
      2.1.  Coverage Example  . . . . . . . . . . . . . . . . . . . .   3
      2.2.  Coverage Across Multiple Documents  . . . . . . . . . . .   5
-   3.  Open Issues and Future Work . . . . . . . . . . . . . . . . .   5
-   4.  Implementation  . . . . . . . . . . . . . . . . . . . . . . .   6
+   3.  Open Issues and Future Work . . . . . . . . . . . . . . . . .   6
+   4.  Implementation  . . . . . . . . . . . . . . . . . . . . . . .   7
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
-   8.  Informative References  . . . . . . . . . . . . . . . . . . .   7
+   7.  Informative References  . . . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -106,6 +105,7 @@ Table of Contents
    YANG module that have a value in one or more example instances.  A
    simple quantitative metric could be the percentage of the module's
    leaf and leaf-list nodes that appear in at least one example.
+
 
 
 
@@ -180,22 +180,52 @@ Internet-Draft                YANG Coverage                 October 2026
      revision 2026-06-25 { description "Initial example revision."; }
      container device {
        description "Top-level device configuration.";
-       leaf hostname { type string; description "The device hostname."; }
-       leaf location { type string; description "Physical location of the device."; }
-       leaf admin-state { type boolean; description "Administrative state of the device."; }
+       leaf hostname {
+         type string;
+         description "The device hostname.";
+       }
+       leaf location {
+         type string;
+         description "Physical location of the device.";
+       }
+       leaf admin-state {
+         type boolean;
+         description "Administrative state of the device.";
+       }
        list interface {
          key "name";
          description "List of device interfaces.";
-         leaf name { type string; description "Interface name; the list key."; }
-         leaf enabled { type boolean; description "Whether the interface is enabled."; }
-         leaf other { type boolean; description "An additional example leaf."; }
+         leaf name {
+           type string;
+           description "Interface name; the list key.";
+         }
+         leaf enabled {
+           type boolean;
+           description "Whether the interface is enabled.";
+         }
+         leaf other {
+           type boolean;
+           description "An additional example leaf.";
+         }
        }
      }
    }
 
    And this example instance:
 
-   <CODE BEGINS> file "example-device-config.xml"
+
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 4]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
    <device xmlns="http://example.com/device">
      <hostname>router1</hostname>
      <interface>
@@ -203,7 +233,6 @@ Internet-Draft                YANG Coverage                 October 2026
        <enabled>true</enabled>
      </interface>
    </device>
-   <CODE ENDS>
 
    A potential coverage analysis tool could then show:
 
@@ -215,16 +244,6 @@ Internet-Draft                YANG Coverage                 October 2026
    *  Coverage percentage: 50%
 
    Uncovered-node tree (missing nodes):
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 4]
-
-Internet-Draft                YANG Coverage                 October 2026
-
 
    device
    - location
@@ -255,6 +274,14 @@ Internet-Draft                YANG Coverage                 October 2026
    this kind of multi-document coverage assessment automatically in the
    future.
 
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 5]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
    For the concept of YANG packages [I-D.ietf-netmod-yang-packages], the
    coverage across the entire package might be of interest.
 
@@ -272,15 +299,6 @@ Internet-Draft                YANG Coverage                 October 2026
       used.  Reporting this properly requires an uncovered tree format
       beyond the YANG tree definition from [RFC8340] that includes that
       information.
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 5]
-
-Internet-Draft                YANG Coverage                 October 2026
-
 
    *  Enumeration values: If a covered leaf is of type enumeration, a
       future version can define whether tools should report which
@@ -305,6 +323,21 @@ Internet-Draft                YANG Coverage                 October 2026
       identities, extensions, RPCs, actions, or notifications, where the
       baseline data-node coverage metric may not apply.
 
+
+
+
+
+
+
+
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 6]
+
+Internet-Draft                YANG Coverage                 October 2026
+
+
 4.  Implementation
 
    A proof-of-concept implementation has been developed in the yangson-
@@ -328,16 +361,6 @@ Internet-Draft                YANG Coverage                 October 2026
    grouping-level reporting, while the exact grouping metrics remain
    future work.
 
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 6]
-
-Internet-Draft                YANG Coverage                 October 2026
-
-
    Other related tooling includes yanglint [YANGLINT], example
    validation scripts such as yang-validation [YANG-VALIDATION], the
    "Internet-Draft with YANG Modules" template [I-D-WITH-YANG-TEMPLATE],
@@ -353,9 +376,7 @@ Internet-Draft                YANG Coverage                 October 2026
 
    This document has no security considerations.
 
-7.  Normative References
-
-8.  Informative References
+7.  Informative References
 
    [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
               for Authors and Reviewers of Documents Containing YANG
@@ -365,6 +386,13 @@ Internet-Draft                YANG Coverage                 October 2026
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
               <https://www.rfc-editor.org/info/rfc8340>.
+
+
+
+Cardona & Claise           Expires 3 May 2027                   [Page 7]
+
+Internet-Draft                YANG Coverage                 October 2026
+
 
    [YANGSON]  CZ.NIC, "Yangson Documentation",
               <https://yangson.labs.nic.cz/>.
@@ -383,16 +411,6 @@ Internet-Draft                YANG Coverage                 October 2026
               IETF OPS AD, ""Internet-Draft with YANG Modules" Template
               Repository",
               <https://github.com/IETF-OPS-AD/I-D-with-yang-template>.
-
-
-
-
-
-
-Cardona & Claise           Expires 3 May 2027                   [Page 7]
-
-Internet-Draft                YANG Coverage                 October 2026
-
 
    [I-D-WITH-YANG-TOOLS]
               IETF OPS AD, "I-D-with-yang-tools Repository",
@@ -420,24 +438,6 @@ Authors' Addresses
    Benoit Claise
    Everything OPS & Arrcus
    Email: benoit@everything-ops.net
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
