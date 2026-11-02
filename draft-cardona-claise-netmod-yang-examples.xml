@@ -59,17 +59,18 @@
       <t>For XML or JSON instance examples intended for automatic extraction and validation, authors MUST use an RFCXML <tt>sourcecode</tt> element with a <tt>name</tt> attribute and code markers so that rendered documents remain easy to extract. The <tt>name</tt> attribute is defined by <xref target="RFC7991"/> as a filename suitable for the contents, including extraction to a local file. This document uses that value as the logical name of the artifact, which defines path-like conventions within that name (similar, but not equal, to a file system).</t>
       <t>Example instances intended to be valid and automatically processed MUST use the logical artifact names <tt>yang/examples/valid-&lt;name&gt;.xml</tt> for XML instances and <tt>yang/examples/valid-&lt;name&gt;.json</tt> for JSON instances. Each name SHOULD be unique within a document (and ideally unique across related documents being analyzed together). For an <xref target="RFC9195"/> instance data set, the portion following <tt>valid-</tt> SHOULD follow the filename conventions in <xref target="RFC9195"/>. The <tt>valid-</tt> prefix is added by this document to identify an instance intended for automatic validation.</t>
       <t>The hierarchical filename is primarily a logical artifact name and classification. During draft development, an accompanying Git repository or other external artifact collection MAY mirror the same logical layout. Where practical, an external repository SHOULD mirror the logical hierarchy. This document does not define the structure of such repositories.</t>
-      <t>For example, an XML instance might be included as:</t>
-      <sourcecode type="xml" name="yang/examples/valid-interface-config.xml" markers="true"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<data> ... </data>
-      ]]></sourcecode>
+      <t>For example, the following RFCXML markup illustrates how an XML instance might be included:</t>
+      <artwork type="xml"><![CDATA[
+<sourcecode type="xml"
+            name="yang/examples/valid-interface-config.xml"
+            markers="true"> ... </sourcecode>
+      ]]></artwork>
       <t>And a JSON instance as:</t>
-      <sourcecode type="json" name="yang/examples/valid-interface-config.json" markers="true"><![CDATA[
-{
-  "interface": { ... }
-}
-      ]]></sourcecode>
+      <artwork type="xml"><![CDATA[
+<sourcecode type="json"
+            name="yang/examples/valid-interface-config.json"
+            markers="true"> ... </sourcecode>
+      ]]></artwork>
       <t>By following this approach, a tool can scan the RFCXML source or the rendered document for code blocks whose logical names are under <tt>yang/examples/</tt>, start with <tt>valid-</tt>, and end in <tt>.xml</tt> or <tt>.json</tt>, extract their contents, and validate them against the appropriate YANG modules.</t>
       <t>In cases where an included code snippet is not meant to represent a valid YANG instance (for instance, it might be pseudocode, a partial fragment, or intentionally invalid to illustrate an error), the author can indicate this so that automated validators skip it. For example, an author might not place the snippet under <tt>yang/examples/</tt>, or might not use the <tt>valid-</tt> prefix. An author could also include an explicit note in the text indicating that a given snippet is not for validation. Using these conventions strikes a balance between making examples extractable and allowing flexibility for authors to include non-valid illustrative snippets when necessary.</t>
       <section>
@@ -108,22 +109,9 @@
     </section>
   </middle>
   <back>
-    <references><name>Normative References</name>&RFC2119;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7991.xml"/>&RFC8174;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/></references>
+    <references><name>Normative References</name>&RFC2119;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7991.xml"/>&RFC8174;<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9195.xml"/><xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/></references>
     <references>
       <name>Informative References</name>
-      <reference anchor="I-D.CAR-CY-YANG-COVERAGE" target="https://datatracker.ietf.org/doc/draft-cardona-claise-netmod-yang-coverage/">
-        <front>
-          <title>YANG Module Coverage by Examples in IETF Documents</title>
-          <author fullname="Camilo Cardona" initials="C." surname="Cardona">
-            <organization>NTT</organization>
-          </author>
-          <author fullname="Benoit Claise" initials="B." surname="Claise">
-            <organization>Everything OPS &amp; Arrcus</organization>
-          </author>
-          <date/>
-        </front>
-        <seriesInfo name="Internet-Draft" value="draft-cardona-claise-netmod-yang-coverage"/>
-      </reference>
       <reference anchor="YANGLINT" target="https://github.com/CESNET/libyang">
         <front>
           <title>libyang and yanglint Repository</title>

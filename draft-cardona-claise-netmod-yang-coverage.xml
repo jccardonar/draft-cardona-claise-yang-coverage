@@ -48,7 +48,7 @@
   <middle>
     <section>
       <name>Introduction</name>
-      <t>Although the YANG data modeling language has been in use for over a decade, tools can help YANG module authors analyze the example instances that illustrate their modules. Example data instances are vital to illustrate how a module is intended to be used. <xref target="RFC9907"/> provides guidelines for authors and reviewers of documents containing YANG data models, including recommendations for usage examples and validation of valid data instances. The YANG data modeling language itself is specified in <xref target="RFC7950"/>.</t>
+      <t>Although the YANG data modeling language has been in use for over a decade, tools can help YANG module authors analyze the example instances that illustrate their modules. Example data instances are vital to illustrate how a module is intended to be used. <xref target="RFC9907"/> provides guidelines for authors and reviewers of documents containing YANG data models, including recommendations for usage examples and validation of valid data instances.</t>
     </section>
     <section>
       <name>YANG Module Coverage by Examples</name>
@@ -86,7 +86,7 @@ module example-device {
 }
         ]]></sourcecode>
         <t>And this example instance:</t>
-        <sourcecode type="xml" name="yang/examples/valid-device-config.xml" markers="true"><![CDATA[
+        <sourcecode type="xml" name="example-device-config.xml" markers="true"><![CDATA[
 <device xmlns="http://example.com/device">
   <hostname>router1</hostname>
   <interface>
@@ -132,7 +132,7 @@ device
     </section>
     <section>
       <name>Implementation</name>
-      <t>A proof-of-concept implementation has been developed in the yangson-coverage repository <xref target="YANGSON-COVERAGE"/>. The implementation uses Yangson <xref target="YANGSON"/> as a library for loading YANG modules and validating instance data, and then implements the coverage logic described in this document. We will attempt to push these ideas direclty to Yangson as we continue our work.</t>
+      <t>A proof-of-concept implementation has been developed in the yangson-coverage repository <xref target="YANGSON-COVERAGE"/>. The implementation uses Yangson <xref target="YANGSON"/> as a library for loading YANG modules and validating instance data, and then implements the coverage logic described in this document. We will attempt to push these ideas directly to Yangson as we continue our work.</t>
       <t>Yangson already exposes validation counters for schema nodes and can print a complete schema tree annotated with those counters. This is useful input, but it is not the report format defined here. The proof of concept tracks covered leaves across validated examples and generates the uncovered-node tree described in this document: covered terminal nodes are removed, and parent nodes are kept only as context.</t>
       <t>The proof of concept also provides a command-line interface to reset coverage state, validate examples while accumulating coverage, and print the uncovered-node report. It includes initial support for grouping-level reporting, while the exact grouping metrics remain future work.</t>
       <t>Other related tooling includes yanglint <xref target="YANGLINT"/>, example validation scripts such as yang-validation <xref target="YANG-VALIDATION"/>, the "Internet-Draft with YANG Modules" template <xref target="I-D-WITH-YANG-TEMPLATE"/>, and the associated I-D-with-yang-tools repository <xref target="I-D-WITH-YANG-TOOLS"/>. These tools and templates support validation of YANG modules, tree generation, and validation of examples.</t>
@@ -149,25 +149,11 @@ device
   <back>
     <references>
       <name>Normative References</name>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/>
     </references>
     <references>
       <name>Informative References</name>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9907.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8340.xml"/>
-      <reference anchor="I-D.CAR-CY-YANG-EXAMPLES" target="https://datatracker.ietf.org/doc/draft-cardona-claise-netmod-yang-examples/">
-        <front>
-          <title>Guidelines for YANG Example and Supporting Artifacts in IETF Documents</title>
-          <author fullname="Camilo Cardona" initials="C." surname="Cardona">
-            <organization>NTT</organization>
-          </author>
-          <author fullname="Benoit Claise" initials="B." surname="Claise">
-            <organization>Everything OPS &amp; Arrcus</organization>
-          </author>
-          <date/>
-        </front>
-        <seriesInfo name="Internet-Draft" value="draft-cardona-claise-netmod-yang-examples"/>
-      </reference>
       <reference anchor="YANGSON" target="https://yangson.labs.nic.cz/">
         <front>
           <title>Yangson Documentation</title>
