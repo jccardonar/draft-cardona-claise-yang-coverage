@@ -49,7 +49,6 @@
     <section>
       <name>Introduction</name>
       <t>Although the YANG data modeling language has been in use for over a decade, tools can help YANG module authors analyze the example instances that illustrate their modules. Example data instances are vital to illustrate how a module is intended to be used. <xref target="RFC9907"/> provides guidelines for authors and reviewers of documents containing YANG data models, including recommendations for usage examples and validation of valid data instances. The YANG data modeling language itself is specified in <xref target="RFC7950"/>.</t>
-      <t>The objective of this document is to define YANG module coverage: a measure of which parts of a YANG module are exercised by example instances. This document operates on example instances that have already been selected and validated; it is independent of how those examples were discovered. Conventions for identifying and validating examples are specified in the companion document <xref target="I-D.CAR-CY-YANG-EXAMPLES"/>.</t>
     </section>
     <section>
       <name>YANG Module Coverage by Examples</name>
@@ -96,7 +95,7 @@ module example-device {
   </interface>
 </device>
         ]]></sourcecode>
-        <t>Coverage analysis shows:</t>
+        <t>A potential coverage analysis tool could then show:</t>
         <ul>
           <li>Total terminal data nodes: 6 (hostname, location, admin-state, interface/name, interface/enabled, interface/other)</li>
           <li>Covered nodes: 3 (hostname, interface/name, interface/enabled)</li>
@@ -124,7 +123,7 @@ device
       <name>Open Issues and Future Work</name>
       <t>The baseline metric in this document is intentionally limited to leaf and leaf-list coverage. Feedback received on version -00 identified additional useful information that is not naturally represented by the baseline uncovered-node tree.</t>
       <ul>
-        <li>Union member types: If a covered leaf is of type union, a future version can define how to report which union member types were exercised by the example instances. The leaf itself may already be covered, while only some of its possible member types were used. Reporting this properly requires an uncovered tree format beyond the YANG tree definition from <xref target="RFC8340"/>.</li>
+        <li>Union member types: If a covered leaf is of type union, a future version can define how to report which union member types were exercised by the example instances. The leaf itself may already be covered, while only some of its possible member types were used. Reporting this properly requires an uncovered tree format beyond the YANG tree definition from <xref target="RFC8340"/> that includes that information.</li>
         <li>Enumeration values: If a covered leaf is of type enumeration, a future version can define whether tools should report which enumeration values were exercised by the example instances. Similar to the case of Union member types, we will need to expand the definition of YANG tree from <xref target="RFC8340"/> to show these values.</li>
         <li>Presence containers: A future version can define whether instantiating a presence container counts as coverage independently from the leaves below it. This is a separate question from the baseline leaf and leaf-list metric because a presence container can carry meaning by existing.</li>
         <li>Groupings: The proof-of-concept implementation already handles the schema nodes created by uses of a grouping. Further work is needed to decide whether grouping-specific metrics are useful, and how they should be reported without confusing abstract grouping definitions with instantiated schema nodes.</li>
@@ -133,7 +132,7 @@ device
     </section>
     <section>
       <name>Implementation</name>
-      <t>A proof-of-concept implementation has been developed in the yangson-coverage repository <xref target="YANGSON-COVERAGE"/>. The implementation uses Yangson <xref target="YANGSON"/> as a library for loading YANG modules and validating instance data, and then implements the coverage logic described in this document.</t>
+      <t>A proof-of-concept implementation has been developed in the yangson-coverage repository <xref target="YANGSON-COVERAGE"/>. The implementation uses Yangson <xref target="YANGSON"/> as a library for loading YANG modules and validating instance data, and then implements the coverage logic described in this document. We will attempt to push these ideas direclty to Yangson as we continue our work.</t>
       <t>Yangson already exposes validation counters for schema nodes and can print a complete schema tree annotated with those counters. This is useful input, but it is not the report format defined here. The proof of concept tracks covered leaves across validated examples and generates the uncovered-node tree described in this document: covered terminal nodes are removed, and parent nodes are kept only as context.</t>
       <t>The proof of concept also provides a command-line interface to reset coverage state, validate examples while accumulating coverage, and print the uncovered-node report. It includes initial support for grouping-level reporting, while the exact grouping metrics remain future work.</t>
       <t>Other related tooling includes yanglint <xref target="YANGLINT"/>, example validation scripts such as yang-validation <xref target="YANG-VALIDATION"/>, the "Internet-Draft with YANG Modules" template <xref target="I-D-WITH-YANG-TEMPLATE"/>, and the associated I-D-with-yang-tools repository <xref target="I-D-WITH-YANG-TOOLS"/>. These tools and templates support validation of YANG modules, tree generation, and validation of examples.</t>
