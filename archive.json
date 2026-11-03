@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-11-01T03:01:10.237193+00:00",
+  "timestamp": "2026-11-03T04:27:37.962443+00:00",
   "repo": "jccardonar/draft-cardona-claise-yang-coverage",
   "labels": [
     {
@@ -101,6 +101,34 @@
       "mergedBy": "jccardonar",
       "mergeCommit": {
         "oid": "1a1bce3a4b1a29eb7cc4f8fe4b31735f927b4b31"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOTFWk3M8AAAABMaomvQ",
+      "title": "examples: RFC 7991 informative, explicit Updates to RFC 9907",
+      "url": "https://github.com/jccardonar/draft-cardona-claise-yang-coverage/pull/3",
+      "state": "MERGED",
+      "author": "bclaise",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- State the extraction requirement on the rendered code markers; in RFCXML this is produced by sourcecode name + markers=\"true\".\n- Move RFC 7991 to Informative (removes the normative downref flagged by idnits) and add the RFCXML vocabulary reference, which is where the markers attribute is defined.\n- New section \"Updates to RFC 9907\" with OLD/NEW text for RFC 9907 Section 3.12.\n- Abstract and Introduction now state what the update changes and point to the new section.",
+      "createdAt": "2026-11-02T22:08:35Z",
+      "updatedAt": "2026-11-02T22:30:42Z",
+      "baseRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "baseRefName": "two_documents",
+      "baseRefOid": "1bdfd6db33a4951fa94d56ebd76e8d595e0a13a5",
+      "headRepository": "jccardonar/draft-cardona-claise-yang-coverage",
+      "headRefName": "benoit-examples-9907",
+      "headRefOid": "c416b1fde2532fbebd1702e6f1ac7ee48b9cab97",
+      "closedAt": "2026-11-02T22:30:42Z",
+      "mergedAt": "2026-11-02T22:30:42Z",
+      "mergedBy": "jccardonar",
+      "mergeCommit": {
+        "oid": "5ada154ab363ebb71d7964ab0511a15f0e5cdc6e"
       },
       "comments": [],
       "reviews": []
